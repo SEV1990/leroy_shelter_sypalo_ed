@@ -168,6 +168,7 @@ async function saveAnimal(){
   alert(id?'✅ Збережено':`✅ ${n} додано!`);
   await renderAdmin();
   renderAnimalsPublic();
+  fetchEnclosures().then(renderSchemePublic); // оновити схему: фото/ім'я могли змінитись
 }
 async function delAnimal(id){
   if(!confirm('Видалити?'))return;
@@ -175,6 +176,7 @@ async function delAnimal(id){
   if(!r.ok){ adminFail(r); return; }
   await renderAdmin();
   renderAnimalsPublic();
+  fetchEnclosures().then(renderSchemePublic); // оновити схему: фото/ім'я могли змінитись
 }
 
 // ── ADMIN: team (add / edit / delete) ────────────────────
@@ -230,14 +232,20 @@ async function delTeam(id){
 
 // ── ADMIN: enclosures / scheme (add / edit / delete) ─────
 const ENC_STATUS={occ:'Зайнятий',empty:'Порожній',nof:'Не функціонує'};
+const ENC_ZONE={bottom:'Нижній ряд',mid:'Центральний',right:'Правий'};
 async function renderEnclosuresAdmin(){
   await fetchEnclosures();
-  document.getElementById('enc-tbody').innerHTML=enclosures.map(e=>`<tr><td>${e.code?'#'+esc(e.code):'—'}</td><td>${esc(e.occupant||'')}</td><td>${ENC_STATUS[e.status]||e.status}</td><td>${e.span}</td><td>${e.block==='top'?'Верхній':'Нижній'}</td><td>${e.sort}</td><td><button class="edit-btn" onclick="editEnclosure(${e.id})">Редагувати</button><button class="del-btn" onclick="delEnclosure(${e.id})">Видалити</button></td></tr>`).join('')||'<tr><td colspan="7" style="color:var(--GD);padding:20px;">Поки порожньо</td></tr>';
+  if(!animals.length) await fetchAnimals();
+  const sel=document.getElementById('e-animal');
+  const cur=sel.value;
+  sel.innerHTML='<option value="">— не з каталогу —</option>'+animals.map(a=>`<option value="${a.id}">${esc(a.name)} (${a.type==='dog'?'🐕':'🐈'} ${esc(a.age||'')})</option>`).join('');
+  sel.value=cur;
+  document.getElementById('enc-tbody').innerHTML=enclosures.map(e=>`<tr><td>${e.code?'#'+esc(e.code):'—'}</td><td>${e.animal_name?'<strong>'+esc(e.animal_name)+'</strong> 🔗':esc(e.occupant||'')}</td><td>${ENC_STATUS[e.status]||e.status}</td><td>${ENC_ZONE[e.zone]||e.zone}</td><td>${e.sort}</td><td><button class="edit-btn" onclick="editEnclosure(${e.id})">Редагувати</button><button class="del-btn" onclick="delEnclosure(${e.id})">Видалити</button></td></tr>`).join('')||'<tr><td colspan="6" style="color:var(--GD);padding:20px;">Поки порожньо</td></tr>';
 }
 function resetEnclosureForm(){
   document.getElementById('e-id').value='';
   ['e-code','e-occupant','e-sort'].forEach(i=>document.getElementById(i).value='');
-  document.getElementById('e-status').value='occ';document.getElementById('e-span').value='1';document.getElementById('e-block').value='top';
+  document.getElementById('e-status').value='occ';document.getElementById('e-zone').value='bottom';document.getElementById('e-animal').value='';
   document.getElementById('e-formtitle').textContent='Новий вольєр';
   document.getElementById('e-cancel').style.display='none';
 }
@@ -247,8 +255,8 @@ function editEnclosure(id){
   document.getElementById('e-code').value=e.code||'';
   document.getElementById('e-occupant').value=e.occupant||'';
   document.getElementById('e-status').value=e.status||'occ';
-  document.getElementById('e-span').value=String(e.span||1);
-  document.getElementById('e-block').value=e.block||'top';
+  document.getElementById('e-zone').value=e.zone||'bottom';
+  document.getElementById('e-animal').value=e.animal_id?String(e.animal_id):'';
   document.getElementById('e-sort').value=e.sort||0;
   document.getElementById('e-formtitle').textContent='Редагувати вольєр '+(e.code?'#'+e.code:'');
   document.getElementById('e-cancel').style.display='';
@@ -260,8 +268,8 @@ async function saveEnclosure(){
     code:document.getElementById('e-code').value,
     occupant:document.getElementById('e-occupant').value,
     status:document.getElementById('e-status').value,
-    span:document.getElementById('e-span').value,
-    block:document.getElementById('e-block').value,
+    zone:document.getElementById('e-zone').value,
+    animal_id:document.getElementById('e-animal').value||null,
     sort:document.getElementById('e-sort').value||'0',
   };
   const r=await api('/enclosures'+(id?'/'+id:''),{method:id?'PUT':'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
@@ -359,23 +367,47 @@ function renderTeamPublic(){
   if(g) g.innerHTML=team.map(teamCard).join('');
 }
 
-function encCell(e){
-  const cls=e.status==='occ'?' occ':e.status==='nof'?' nof':'';
-  const span=e.span===2?' style="grid-column:span 2"':'';
-  const code=e.code?`<span class="vn">#${esc(e.code)}</span>`:'';
-  return`<div class="vcell${cls}"${span}>${code}${esc(e.occupant||'')}</div>`;
+function schemeCell(e){
+  const L=T[currentLang];
+  const nof=e.status==='nof';
+  const name=e.animal_name||e.occupant||'';
+  const occ=!nof&&!!name;
+  const cls=nof?'nof':occ?'occ':'empty';
+  const click=e.animal_id?` onclick="openSchemeAnimal(${e.animal_id})"`:'';
+  const ava=(occ&&e.animal_photo)?`<img class="sava" src="${rp(e.animal_photo)}" alt="" loading="lazy" onerror="this.remove()">`:'';
+  const label=nof?L.leg_nof:(occ?esc(name):L.scm_free);
+  return `<div class="scell ${cls}${e.animal_id?' clickable':''}"${click}><span class="sn">${e.code?'№'+esc(e.code):''}</span>${ava}<span class="sname">${label}</span></div>`;
 }
 function renderSchemePublic(){
-  const top=document.getElementById('scm-top'), bottom=document.getElementById('scm-bottom');
-  if(!top||!bottom) return;
-  top.innerHTML=enclosures.filter(e=>e.block==='top').map(encCell).join('');
-  bottom.innerHTML=enclosures.filter(e=>e.block==='bottom').map(encCell).join('');
-  const occ=enclosures.filter(e=>e.status==='occ').length;
-  const emp=enclosures.filter(e=>e.status==='empty'&&e.code).length;
+  if(!document.getElementById('smap-bottom')) return;
+  for(const [zone,id] of [['bottom','smap-bottom'],['mid','smap-mid'],['right','smap-right']]){
+    const items=enclosures.filter(e=>(e.zone||'bottom')===zone).sort((a,b)=>(a.sort-b.sort)||(a.id-b.id));
+    document.getElementById(id).innerHTML=items.map(schemeCell).join('');
+  }
   const nof=enclosures.filter(e=>e.status==='nof').length;
+  const occ=enclosures.filter(e=>e.status!=='nof'&&(e.animal_name||e.occupant)).length;
+  const emp=enclosures.length-occ-nof;
   const s=document.getElementById('scm-summary');
   if(s){const L=T[currentLang];s.textContent=`${L.scm_occ2}: ${occ} · ${L.scm_emp2}: ${emp} · ${L.scm_nof2}: ${nof}`;}
 }
+async function openSchemeAnimal(id){
+  if(!animals.length) await fetchAnimals();
+  const a=animals.find(x=>x.id===id); if(!a) return;
+  const L=T[currentLang];
+  const sL={shelter:L.s_shelter,foster:L.s_foster,adopted:L.s_adopted};
+  const sC={shelter:'ss',foster:'sf',adopted:'sa'};
+  const ph=a.photo?`<img src="${rp(a.photo)}" style="width:100%;height:220px;object-fit:cover;border-radius:6px;margin-bottom:14px;" alt="">`:'';
+  const adopt=a.status!=='adopted'?`<button class="abtn" style="margin-top:14px;" onclick="closeSchemeAnimal();adoptById(${a.id})">${a.type==='cat'?L.adopt_cat:L.adopt_dog}</button>`:'';
+  document.getElementById('am-body').innerHTML=`${ph}<h2 style="margin-bottom:8px;">${esc(a.name)}</h2>
+    <div class="metarow" style="margin-bottom:8px;"><span class="chip">${a.type==='dog'?L.dog:L.cat}</span><span class="chip">${a.gender==='м'?L.male:L.female}</span>${a.age?`<span class="chip">${esc(a.age)}</span>`:''}</div>
+    ${a.breed?`<p style="font-size:13px;color:var(--GD);margin-bottom:8px;">${esc(a.breed)}</p>`:''}
+    <span class="sbadge ${sC[a.status]||'ss'}">${sL[a.status]||''}</span>
+    ${a.desc?`<p style="margin-top:12px;font-size:14px;color:#444;">${esc(a.desc)}</p>`:''}
+    ${adopt}`;
+  document.getElementById('am').classList.add('open');
+}
+function closeSchemeAnimal(){document.getElementById('am').classList.remove('open');}
+function adoptById(id){const a=animals.find(x=>x.id===id);if(a)adoptClick(a.name);}
 
 function applySettings(){
   document.querySelectorAll('[data-setting]').forEach(el=>{
@@ -399,6 +431,7 @@ let currentLang = 'uk';
 
 const T = {
   uk: {
+    scm_free:'вільний',
     hero_eyebrow:'З 2022 РОКУ · 5 ОБЛАСТЕЙ · 2800+ ВРЯТОВАНИХ',
     ac_sign:'Подаруй шанс<br>на справжнє<br>життя!',
     ac_n1:'Малиш · 1 рік · хлопець', ac_n2:'Бусоля · 2 роки · дівчина', ac_n3:'Барон · 5 років · хлопець', ac_n4:'Ріка · 3 роки · дівчина',
@@ -551,6 +584,7 @@ const T = {
     val3_h:'Допомога без слів',val3_p:'Тварини не можуть попросити самі. Ми — їхній голос.',
   },
   en: {
+    scm_free:'free',
     hero_eyebrow:'SINCE 2022 · 5 REGIONS · 2,800+ RESCUED',
     ac_sign:'Give a chance<br>at a real<br>life!',
     ac_n1:'Malysh · 1 year · boy', ac_n2:'Busolia · 2 years · girl', ac_n3:'Baron · 5 years · boy', ac_n4:'Rika · 3 years · girl',

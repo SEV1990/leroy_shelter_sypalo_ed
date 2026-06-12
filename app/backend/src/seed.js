@@ -25,32 +25,33 @@ export const SEED_TEAM = [
   { name: 'Катерина Мороз', role: 'SMM · Комунікації', descr: 'Веде Telegram-канал на 7 000+ підписників. Організовує благодійні заходи.', photo: '/assets/img/team6.jpg', sort: 6 },
 ];
 
-// Enclosures for the shelter map. block: 'top' | 'bottom'.
-// status: 'occ' (occupied) | 'empty' | 'nof' (non-functional). span: 1 | 2.
+// Enclosures for the shelter map (matches the real site plan PDF).
+// zone: 'bottom' (front row) | 'mid' (central block) | 'right' (right cluster).
+// status: 'occ' | 'empty' | 'nof'. `animal` links the cell to a catalogue animal by name.
 export const SEED_ENCLOSURES = [
-  // top block
-  { code: '10', occupant: '—', status: 'empty', span: 1, block: 'top', sort: 1 },
-  { code: '11', occupant: 'Малиш', status: 'occ', span: 1, block: 'top', sort: 2 },
-  { code: '12', occupant: '—', status: 'empty', span: 1, block: 'top', sort: 3 },
-  { code: '13', occupant: 'Чорно-білий', status: 'occ', span: 2, block: 'top', sort: 4 },
-  { code: '14', occupant: 'Чорний вівчар', status: 'occ', span: 1, block: 'top', sort: 5 },
-  { code: '15', occupant: 'Ріка', status: 'occ', span: 1, block: 'top', sort: 6 },
-  { code: '16', occupant: 'Мія', status: 'occ', span: 1, block: 'top', sort: 7 },
-  { code: '17', occupant: 'Єва', status: 'occ', span: 1, block: 'top', sort: 8 },
-  { code: '18', occupant: '—', status: 'empty', span: 1, block: 'top', sort: 9 },
-  { code: '19', occupant: 'Шархан', status: 'occ', span: 1, block: 'top', sort: 10 },
-  { code: '20', occupant: 'Не функц.', status: 'nof', span: 1, block: 'top', sort: 11 },
-  // bottom block
-  { code: '1', occupant: 'Джек', status: 'occ', span: 1, block: 'bottom', sort: 1 },
-  { code: '2', occupant: 'Бусоля', status: 'occ', span: 1, block: 'bottom', sort: 2 },
-  { code: '3', occupant: '—', status: 'empty', span: 1, block: 'bottom', sort: 3 },
-  { code: '4', occupant: '—', status: 'empty', span: 1, block: 'bottom', sort: 4 },
-  { code: '5', occupant: '—', status: 'empty', span: 1, block: 'bottom', sort: 5 },
-  { code: '6', occupant: 'Сарбона', status: 'occ', span: 1, block: 'bottom', sort: 6 },
-  { code: '7', occupant: 'Барон', status: 'occ', span: 1, block: 'bottom', sort: 7 },
-  { code: '8', occupant: 'Сірий метис', status: 'occ', span: 2, block: 'bottom', sort: 8 },
-  { code: '', occupant: '', status: 'empty', span: 1, block: 'bottom', sort: 9 },
-  { code: '9', occupant: 'Адік', status: 'occ', span: 2, block: 'bottom', sort: 10 },
+  // bottom row, left to right (1-9)
+  { code: '1',  animal: 'Джек Кардан', occupant: '', status: 'occ',   zone: 'bottom', sort: 1 },
+  { code: '2',  animal: 'Бусоля',      occupant: '', status: 'occ',   zone: 'bottom', sort: 2 },
+  { code: '3',  animal: '', occupant: '',            status: 'empty', zone: 'bottom', sort: 3 },
+  { code: '4',  animal: '', occupant: '',            status: 'empty', zone: 'bottom', sort: 4 },
+  { code: '5',  animal: '', occupant: '',            status: 'empty', zone: 'bottom', sort: 5 },
+  { code: '6',  animal: 'Сарбона', occupant: '',     status: 'occ',   zone: 'bottom', sort: 6 },
+  { code: '7',  animal: 'Барон', occupant: '',       status: 'occ',   zone: 'bottom', sort: 7 },
+  { code: '8',  animal: '', occupant: 'Середній пес', status: 'occ',  zone: 'bottom', sort: 8 },
+  { code: '9',  animal: 'Адік', occupant: '',        status: 'occ',   zone: 'bottom', sort: 9 },
+  // central block (15-19) + non-functional 20
+  { code: '15', animal: 'Ріка', occupant: '',        status: 'occ',   zone: 'mid', sort: 1 },
+  { code: '16', animal: 'Мія', occupant: '',         status: 'occ',   zone: 'mid', sort: 2 },
+  { code: '17', animal: 'Єва', occupant: '',         status: 'occ',   zone: 'mid', sort: 3 },
+  { code: '18', animal: '', occupant: '',            status: 'empty', zone: 'mid', sort: 4 },
+  { code: '19', animal: 'Шархан', occupant: '',      status: 'occ',   zone: 'mid', sort: 5 },
+  { code: '20', animal: '', occupant: '',            status: 'nof',   zone: 'mid', sort: 6 },
+  // right cluster (10-14)
+  { code: '10', animal: '', occupant: '',            status: 'empty', zone: 'right', sort: 1 },
+  { code: '11', animal: 'Малиш', occupant: '',       status: 'occ',   zone: 'right', sort: 2 },
+  { code: '12', animal: '', occupant: '',            status: 'empty', zone: 'right', sort: 3 },
+  { code: '13', animal: '', occupant: 'Чорно-білий пес', status: 'occ', zone: 'right', sort: 4 },
+  { code: '14', animal: '', occupant: 'Чорний вівчар',   status: 'occ', zone: 'right', sort: 5 },
 ];
 
 export const SEED_SETTINGS = {

@@ -982,3 +982,42 @@ nav.scrolled .nav-logo-text span{display:none;}
   [data-reveal]{opacity:1!important;transform:none!important;}
 }
 
+
+
+/* ── SHELTER SITE-PLAN MAP (matches the real territory plan) ── */
+.smap{position:relative;background:linear-gradient(180deg,#171512,#12110f);border:1px solid rgba(245,200,66,.22);border-radius:10px;min-height:440px;overflow:hidden;}
+.smap::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:36px 36px;}
+.smap-zone{position:absolute;display:flex;gap:7px;z-index:2;}
+.smap-bottom{left:2.5%;right:13%;bottom:4.5%;}
+.smap-bottom .scell{flex:1;}
+.smap-mid{left:13%;top:35%;width:47%;}
+.smap-mid .scell{flex:1;}
+.smap-right{right:3%;top:7%;width:23%;flex-wrap:wrap;}
+.smap-right .scell{width:calc(50% - 4px);flex:none;}
+.scell{background:#201d19;border:1.5px solid #3b372f;border-radius:7px;min-height:80px;padding:24px 9px 9px;position:relative;display:flex;flex-direction:column;justify-content:flex-end;gap:5px;transition:transform .18s,border-color .18s,box-shadow .18s;}
+.scell .sn{position:absolute;top:6px;left:8px;font-size:9.5px;color:#6f6757;font-weight:800;letter-spacing:.5px;}
+.scell .sava{width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid var(--Y);}
+.scell .sname{font-size:11px;line-height:1.25;color:var(--W);font-weight:700;}
+.scell.occ{border-color:rgba(29,158,117,.55);background:linear-gradient(180deg,#1d2420,#191f1b);}
+.scell.occ .sn{color:#1D9E75;}
+.scell.empty .sname{color:#5d564a;font-weight:600;font-size:9.5px;letter-spacing:.6px;text-transform:uppercase;}
+.scell.nof{border-style:dashed;border-color:rgba(216,90,48,.55);opacity:.8;}
+.scell.nof .sname{color:#D85A30;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
+.scell.clickable{cursor:pointer;}
+.scell.clickable:hover{transform:translateY(-3px);border-color:var(--Y);box-shadow:0 8px 22px rgba(0,0,0,.45);}
+.smap-cat{position:absolute;right:1.8%;top:38%;bottom:4.5%;width:7.5%;background:rgba(245,200,66,.10);border:1.5px solid rgba(245,200,66,.45);border-radius:7px;display:flex;align-items:center;justify-content:center;z-index:2;}
+.smap-cat span{writing-mode:vertical-rl;transform:rotate(180deg);color:var(--Y);font-size:9.5px;font-weight:800;letter-spacing:3px;text-transform:uppercase;}
+.smap-entry{position:absolute;z-index:2;font-size:9px;font-weight:800;letter-spacing:2.5px;color:#8a8170;text-transform:uppercase;display:flex;align-items:center;gap:8px;}
+.smap-entry::before{content:'';width:34px;border-top:2px dashed rgba(245,200,66,.6);}
+.smap-entry-l{left:1.5%;top:29%;}
+.smap-entry-r{right:13%;top:5%;flex-direction:row-reverse;}
+@media(max-width:860px){
+  .smap{min-height:0;padding:14px;}
+  .smap-zone{position:static;flex-wrap:wrap;margin-bottom:12px;}
+  .smap-bottom .scell,.smap-mid .scell{flex:none;width:calc(33.33% - 5px);}
+  .smap-right{width:auto;}
+  .smap-right .scell{width:calc(33.33% - 5px);}
+  .smap-cat{position:static;width:auto;padding:12px;margin-top:2px;}
+  .smap-cat span{writing-mode:horizontal-tb;transform:none;}
+  .smap-entry{display:none;}
+}

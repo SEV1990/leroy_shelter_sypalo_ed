@@ -206,17 +206,13 @@
       <div class="vleg-item"><div class="vleg-dot" style="background:var(--W);border:1.5px solid var(--G);"></div><span data-i18n="leg_emp">Порожній</span></div>
       <div class="vleg-item"><div class="vleg-dot" style="background:#D85A30;"></div><span data-i18n="leg_nof">Не функціонує</span></div>
     </div>
-    <div class="vmap">
-      <div class="vlabel" data-i18n="scm_entry">ЗАЇЗД</div>
-      <div style="display:flex;flex-direction:column;gap:10px;">
-        <div class="vrow vrow-6" id="scm-top"></div>
-        <div class="vdivider"></div>
-        <div class="vrow vrow-6" id="scm-bottom"></div>
-      </div>
-      <div class="vside">
-        <div class="cat-bld" data-i18n="scm_cat">КОТОБУДИНОК</div>
-        <div class="vlabel" style="min-height:40px;" data-i18n="scm_entry">ЗАЇЗД</div>
-      </div>
+    <div class="smap" id="smap">
+      <div class="smap-entry smap-entry-l"><span data-i18n="scm_entry">ЗАЇЗД</span></div>
+      <div class="smap-entry smap-entry-r"><span data-i18n="scm_entry">ЗАЇЗД</span></div>
+      <div class="smap-zone smap-right" id="smap-right"></div>
+      <div class="smap-zone smap-mid" id="smap-mid"></div>
+      <div class="smap-zone smap-bottom" id="smap-bottom"></div>
+      <div class="smap-cat"><span data-i18n="scm_cat">КОТОБУДИНОК</span></div>
     </div>
     <p id="scm-summary" style="margin-top:20px;font-size:12px;color:#5a4010;font-weight:600;"></p>
   </div>
@@ -684,17 +680,17 @@
         <input type="hidden" id="e-id" value="">
         <div class="g2">
           <div class="fg"><label>Номер (без #)</label><input type="text" id="e-code" placeholder="11"></div>
-          <div class="fg"><label>Хто всередині</label><input type="text" id="e-occupant" placeholder="Малиш / — / Не функц."></div>
+          <div class="fg"><label>Тварина з каталогу (фото та ім'я підтягнуться самі)</label><select id="e-animal"><option value="">— не з каталогу —</option></select></div>
+          <div class="fg"><label>Або текст вручну (якщо тварини немає в каталозі)</label><input type="text" id="e-occupant" placeholder="Середній пес"></div>
           <div class="fg"><label>Статус</label><select id="e-status"><option value="occ">Зайнятий</option><option value="empty">Порожній</option><option value="nof">Не функціонує</option></select></div>
-          <div class="fg"><label>Ширина</label><select id="e-span"><option value="1">1 клітинка</option><option value="2">2 клітинки</option></select></div>
-          <div class="fg"><label>Блок</label><select id="e-block"><option value="top">Верхній</option><option value="bottom">Нижній</option></select></div>
+          <div class="fg"><label>Зона на схемі</label><select id="e-zone"><option value="bottom">Нижній ряд (1–9)</option><option value="mid">Центральний блок (15–20)</option><option value="right">Правий блок (10–14)</option></select></div>
           <div class="fg"><label>Порядок</label><input type="number" id="e-sort" placeholder="1"></div>
         </div>
         <button class="add-btn" onclick="saveEnclosure()">Зберегти</button>
         <button class="del-btn" id="e-cancel" style="margin-left:8px;display:none;" onclick="resetEnclosureForm()">Скасувати</button>
       </div>
       <table class="adm-table">
-        <thead><tr><th>#</th><th>Хто</th><th>Статус</th><th>Ширина</th><th>Блок</th><th>Порядок</th><th>Дії</th></tr></thead>
+        <thead><tr><th>#</th><th>Хто</th><th>Статус</th><th>Зона</th><th>Порядок</th><th>Дії</th></tr></thead>
         <tbody id="enc-tbody"></tbody>
       </table>
     </div>
@@ -781,6 +777,14 @@
   <div class="cinp-row">
     <input type="text" id="cinp" placeholder="Напишіть питання..." onkeydown="if(event.key==='Enter')sendChat()">
     <button class="csend" onclick="sendChat()">→</button>
+  </div>
+</div>
+
+<!-- ANIMAL MODAL (scheme click) -->
+<div class="moverlay" id="am">
+  <div class="modal">
+    <button class="mclose" onclick="closeSchemeAnimal()">✕</button>
+    <div id="am-body"></div>
   </div>
 </div>
 

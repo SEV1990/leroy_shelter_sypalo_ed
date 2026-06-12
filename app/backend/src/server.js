@@ -198,18 +198,24 @@ function enclosureFromBody(b = {}) {
     status: ['occ', 'empty', 'nof'].includes(b.status) ? b.status : 'empty',
     span: parseInt(b.span, 10) === 2 ? 2 : 1,
     block: b.block === 'bottom' ? 'bottom' : 'top',
+    zone: ['bottom', 'mid', 'right'].includes(b.zone) ? b.zone : 'bottom',
+    animal_id: parseInt(b.animal_id, 10) || null,
     sort: parseInt(b.sort, 10) || 0,
   };
 }
 
 app.get('/api/enclosures', (_req, res) => {
-  res.json(db.prepare('SELECT * FROM enclosures ORDER BY block, sort, id').all());
+  res.json(db.prepare(`SELECT e.*, a.name AS animal_name, a.photo AS animal_photo, a.age AS animal_age,
+                              a.breed AS animal_breed, a.type AS animal_type, a.gender AS animal_gender,
+                              a.status AS animal_status
+                       FROM enclosures e LEFT JOIN animals a ON a.id = e.animal_id
+                       ORDER BY e.zone, e.sort, e.id`).all());
 });
 
 app.post('/api/enclosures', auth, (req, res) => {
   const row = enclosureFromBody(req.body);
   const info = db
-    .prepare('INSERT INTO enclosures (code,occupant,status,span,block,sort) VALUES (@code,@occupant,@status,@span,@block,@sort)')
+    .prepare('INSERT INTO enclosures (code,occupant,status,span,block,zone,animal_id,sort) VALUES (@code,@occupant,@status,@span,@block,@zone,@animal_id,@sort)')
     .run(row);
   res.status(201).json({ id: info.lastInsertRowid, ...row });
 });
@@ -218,7 +224,7 @@ app.put('/api/enclosures/:id', auth, (req, res) => {
   const existing = db.prepare('SELECT id FROM enclosures WHERE id = ?').get(req.params.id);
   if (!existing) return res.status(404).json({ error: 'not found' });
   const row = enclosureFromBody(req.body);
-  db.prepare('UPDATE enclosures SET code=@code,occupant=@occupant,status=@status,span=@span,block=@block,sort=@sort WHERE id=@id')
+  db.prepare('UPDATE enclosures SET code=@code,occupant=@occupant,status=@status,span=@span,block=@block,zone=@zone,animal_id=@animal_id,sort=@sort WHERE id=@id')
     .run({ ...row, id: req.params.id });
   res.json({ id: Number(req.params.id), ...row });
 });

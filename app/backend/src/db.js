@@ -34,12 +34,14 @@ db.exec(`
 
   CREATE TABLE IF NOT EXISTS enclosures (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    code     TEXT DEFAULT '',
-    occupant TEXT DEFAULT '',
-    status   TEXT NOT NULL DEFAULT 'empty',
-    span     INTEGER NOT NULL DEFAULT 1,
-    block    TEXT NOT NULL DEFAULT 'top',
-    sort     INTEGER NOT NULL DEFAULT 0
+    code      TEXT DEFAULT '',
+    occupant  TEXT DEFAULT '',
+    status    TEXT NOT NULL DEFAULT 'empty',
+    span      INTEGER NOT NULL DEFAULT 1,
+    block     TEXT NOT NULL DEFAULT 'top',
+    zone      TEXT NOT NULL DEFAULT '',
+    animal_id INTEGER,
+    sort      INTEGER NOT NULL DEFAULT 0
   );
 
   CREATE TABLE IF NOT EXISTS settings (
@@ -77,7 +79,23 @@ function seedTable(table, rows, columns) {
 
 seedTable('animals', SEED_ANIMALS, ['name', 'type', 'gender', 'age', 'breed', 'status', 'descr', 'photo']);
 seedTable('team', SEED_TEAM, ['name', 'role', 'descr', 'photo', 'sort']);
-seedTable('enclosures', SEED_ENCLOSURES, ['code', 'occupant', 'status', 'span', 'block', 'sort']);
+// enclosures are seeded by the zone-aware rebuild below (handles legacy DBs too)
+const encCols = db.prepare('PRAGMA table_info(enclosures)').all().map((c) => c.name);
+if (!encCols.includes('zone')) db.exec("ALTER TABLE enclosures ADD COLUMN zone TEXT NOT NULL DEFAULT ''");
+if (!encCols.includes('animal_id')) db.exec('ALTER TABLE enclosures ADD COLUMN animal_id INTEGER');
+const zoned = db.prepare("SELECT COUNT(*) AS n FROM enclosures WHERE zone != ''").get().n;
+if (zoned === 0) {
+  // first run on the new site-plan layout: rebuild cells from the real scheme
+  db.exec('DELETE FROM enclosures');
+  const findAnimal = db.prepare('SELECT id FROM animals WHERE name = ?');
+  const insEnc = db.prepare('INSERT INTO enclosures (code,occupant,status,zone,animal_id,sort) VALUES (?,?,?,?,?,?)');
+  const tx = db.transaction((rows) => rows.forEach((r) => {
+    const a = r.animal ? findAnimal.get(r.animal) : null;
+    insEnc.run(r.code, r.occupant, r.status, r.zone, a ? a.id : null, r.sort);
+  }));
+  tx(SEED_ENCLOSURES);
+  console.log(`[db] rebuilt ${SEED_ENCLOSURES.length} enclosures for the site-plan scheme`);
+}
 
 // collections: seed once
 const colCount = db.prepare('SELECT COUNT(*) AS n FROM collections').get().n;
