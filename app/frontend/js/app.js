@@ -186,7 +186,7 @@ async function renderTeamAdmin(){
 }
 function resetTeamForm(){
   document.getElementById('t-id').value='';
-  ['t-name','t-role','t-desc','t-sort','t-photo'].forEach(i=>document.getElementById(i).value='');
+  ['t-name','t-role','t-desc','t-sort','t-photo','t-insta'].forEach(i=>document.getElementById(i).value='');
   document.getElementById('t-photofile').value='';
   document.getElementById('t-formtitle').textContent='Новий учасник команди';
   document.getElementById('t-cancel').style.display='none';
@@ -198,6 +198,7 @@ function editTeam(id){
   document.getElementById('t-role').value=t.role||'';
   document.getElementById('t-desc').value=t.descr||'';
   document.getElementById('t-sort').value=t.sort||0;
+  document.getElementById('t-insta').value=t.insta||'';
   document.getElementById('t-photo').value='';document.getElementById('t-photofile').value='';
   document.getElementById('t-formtitle').textContent='Редагувати: '+t.name;
   document.getElementById('t-cancel').style.display='';
@@ -212,6 +213,7 @@ async function saveTeam(){
   fd.append('role',document.getElementById('t-role').value);
   fd.append('desc',document.getElementById('t-desc').value);
   fd.append('sort',document.getElementById('t-sort').value||'0');
+  fd.append('insta',document.getElementById('t-insta').value.trim());
   const photoUrl=document.getElementById('t-photo').value.trim();
   if(photoUrl) fd.append('photo',photoUrl);
   const file=document.getElementById('t-photofile').files[0];
@@ -358,9 +360,13 @@ document.getElementById('dm').addEventListener('click',function(e){if(e.target==
 // ── PUBLIC RENDERERS (data-driven sections) ──────────────
 async function renderAnimalsPublic(){ await fetchAnimals(); renderAnimals('all'); }
 
+const INSTA_SVG='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.3"/><circle cx="17.4" cy="6.6" r="1.2" fill="currentColor" stroke="none"/></svg>';
+function instaUrl(v){v=String(v||'').trim();if(!v)return'';if(/^https?:\/\//i.test(v))return v;return'https://instagram.com/'+v.replace(/^@/,'');}
+function instaHandle(v){v=String(v||'').trim();if(!v)return'';const m=v.match(/instagram\.com\/([\w.\-]+)/i);const h=m?m[1]:v.replace(/^@/,'');return'@'+h;}
 function teamCard(t){
-  const ph=t.photo?`<img src="${t.photo}" alt="${esc(t.name)}">`:'';
-  return`<div class="tcard"><div class="tphoto">${ph}</div><div class="tbody"><div class="tname">${esc(t.name)}</div><div class="trole">${esc(t.role||'')}</div><p class="tdesc">${esc(t.descr||'')}</p></div></div>`;
+  const ph=t.photo?`<img src="${rp(t.photo)}" alt="${esc(t.name)}" loading="lazy" onerror="this.outerHTML='<div class=\'tphoto-ph\'>🐾</div>'">`:'<div class="tphoto-ph">🐾</div>';
+  const insta=t.insta?`<a class="tinsta" href="${esc(instaUrl(t.insta))}" target="_blank" rel="noopener">${INSTA_SVG}<span>${esc(instaHandle(t.insta))}</span></a>`:'';
+  return`<div class="tcard"><div class="tphoto">${ph}</div><div class="tbody"><div class="tname">${esc(t.name)}</div><div class="trole">${esc(t.role||'')}</div><p class="tdesc">${esc(t.descr||'')}</p>${insta}</div></div>`;
 }
 function renderTeamPublic(){
   const g=document.getElementById('team-grid');

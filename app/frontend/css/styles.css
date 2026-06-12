@@ -406,14 +406,20 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:var(--K);height:8
 .team-hdr{background:var(--K);padding:72px 60px;border-bottom:3px solid var(--Y);}
 .team-hdr .h1{color:var(--Y);}
 .team-hdr .desc{color:var(--GM);}
-.team-grid{background:var(--Y);padding:48px 60px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
-.tcard{background:var(--W);border-radius:8px;overflow:hidden;display:flex;flex-direction:column;align-items:center;}
-.tphoto{width:72px;height:72px;background:var(--G);border-radius:50%;overflow:hidden;margin:0 auto 8px;flex-shrink:0;}
-.tphoto img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;}
-.tbody{padding:14px 12px;}
-.tname{font-family:'Bebas Neue',sans-serif;font-size:18px;margin-bottom:2px;letter-spacing:.5px;text-align:center;}
-.trole{font-size:10px;font-weight:700;color:var(--GD);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;text-align:center;}
-.tdesc{font-size:12px;color:var(--GD);line-height:1.5;text-align:center;}
+.team-grid{background:var(--Y);padding:56px 60px;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.tcard{background:var(--W);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 6px 24px rgba(0,0,0,.10);}
+.tphoto{width:100%;aspect-ratio:4/4.4;background:var(--G);overflow:hidden;position:relative;}
+.tphoto img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;transition:transform .55s var(--ease-out);}
+.tcard:hover .tphoto img{transform:scale(1.06);}
+.tphoto-ph{display:flex;align-items:center;justify-content:center;height:100%;font-size:56px;}
+.tbody{padding:20px 22px 22px;display:flex;flex-direction:column;gap:6px;flex:1;}
+.tname{font-family:'Bebas Neue',sans-serif;font-size:27px;letter-spacing:.5px;line-height:1;}
+.trole{font-size:11px;font-weight:800;color:#a07800;text-transform:uppercase;letter-spacing:1.2px;}
+.tdesc{font-size:13px;color:var(--GD);line-height:1.55;}
+.tinsta{display:inline-flex;align-items:center;gap:7px;margin-top:auto;padding-top:10px;font-size:12.5px;font-weight:700;color:#C13584;text-decoration:none;transition:color .2s;}
+.tinsta:hover{color:#8a2387;}
+.tinsta svg{flex-shrink:0;}
+@media(max-width:1100px){.team-grid{grid-template-columns:repeat(2,1fr);}}
 .team-cta{background:var(--K);padding:60px;text-align:center;}
 
 /* ── MISSION ── */

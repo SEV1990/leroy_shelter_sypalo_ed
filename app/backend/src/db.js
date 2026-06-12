@@ -29,6 +29,7 @@ db.exec(`
     role  TEXT DEFAULT '',
     descr TEXT DEFAULT '',
     photo TEXT DEFAULT '',
+    insta TEXT DEFAULT '',
     sort  INTEGER NOT NULL DEFAULT 0
   );
 
@@ -78,7 +79,11 @@ function seedTable(table, rows, columns) {
 }
 
 seedTable('animals', SEED_ANIMALS, ['name', 'type', 'gender', 'age', 'breed', 'status', 'descr', 'photo']);
-seedTable('team', SEED_TEAM, ['name', 'role', 'descr', 'photo', 'sort']);
+seedTable('team', SEED_TEAM, ['name', 'role', 'descr', 'photo', 'insta', 'sort']);
+// team: add Instagram link column on legacy DBs
+const teamCols = db.prepare('PRAGMA table_info(team)').all().map((c) => c.name);
+if (!teamCols.includes('insta')) db.exec("ALTER TABLE team ADD COLUMN insta TEXT DEFAULT ''");
+
 // enclosures are seeded by the zone-aware rebuild below (handles legacy DBs too)
 const encCols = db.prepare('PRAGMA table_info(enclosures)').all().map((c) => c.name);
 if (!encCols.includes('zone')) db.exec("ALTER TABLE enclosures ADD COLUMN zone TEXT NOT NULL DEFAULT ''");

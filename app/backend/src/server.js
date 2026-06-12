@@ -152,6 +152,7 @@ function teamFromBody(req) {
     role: b.role || '',
     descr: b.desc || b.descr || '',
     photo: resolvePhoto(req),
+    insta: (b.insta || '').trim(),
     sort: parseInt(b.sort, 10) || 0,
   };
 }
@@ -164,7 +165,7 @@ app.post('/api/team', auth, upload.single('photofile'), (req, res) => {
   const row = teamFromBody(req);
   if (!row.name) return res.status(400).json({ error: 'name required' });
   const info = db
-    .prepare('INSERT INTO team (name,role,descr,photo,sort) VALUES (@name,@role,@descr,@photo,@sort)')
+    .prepare('INSERT INTO team (name,role,descr,photo,insta,sort) VALUES (@name,@role,@descr,@photo,@insta,@sort)')
     .run(row);
   res.status(201).json({ id: info.lastInsertRowid, ...row });
 });
@@ -176,7 +177,7 @@ app.put('/api/team/:id', auth, upload.single('photofile'), (req, res) => {
   if (!row.name) return res.status(400).json({ error: 'name required' });
   if (!row.photo) row.photo = existing.photo;
   else if (req.file && existing.photo) deleteUpload(existing.photo);
-  db.prepare('UPDATE team SET name=@name,role=@role,descr=@descr,photo=@photo,sort=@sort WHERE id=@id')
+  db.prepare('UPDATE team SET name=@name,role=@role,descr=@descr,photo=@photo,insta=@insta,sort=@sort WHERE id=@id')
     .run({ ...row, id: req.params.id });
   res.json({ id: Number(req.params.id), ...row });
 });
