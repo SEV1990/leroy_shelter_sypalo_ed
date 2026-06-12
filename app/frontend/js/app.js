@@ -317,20 +317,20 @@ async function submitContact(){
   const contact=document.getElementById('ct-contact').value.trim();
   const subject=document.getElementById('ct-subject').value;
   const message=document.getElementById('ct-message').value.trim();
-  if(!name||!contact){alert('Вкажіть ім’я та контакт');return;}
+  if(!name||!contact){alert(T[currentLang].al_req);return;}
   const r=await fetch(API+'/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,contact,subject,message})});
-  if(r.ok){ alert('Дякуємо! Зв’яжемось найближчим часом.'); ['ct-name','ct-contact','ct-message'].forEach(i=>document.getElementById(i).value=''); }
-  else alert('Не вдалося надіслати. Спробуйте пізніше.');
+  if(r.ok){ alert(T[currentLang].al_ok); ['ct-name','ct-contact','ct-message'].forEach(i=>document.getElementById(i).value=''); }
+  else alert(T[currentLang].al_fail);
 }
 async function submitEvacuation(){
   const contact=document.getElementById('ev-contact').value.trim();
   const location=document.getElementById('ev-location').value.trim();
   const animalsTxt=document.getElementById('ev-animals').value.trim();
   const details=document.getElementById('ev-details').value.trim();
-  if(!contact||!location){alert('Вкажіть контакт і місце перебування тварини');return;}
+  if(!contact||!location){alert(T[currentLang].al_evreq);return;}
   const r=await fetch(API+'/evacuation',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contact,location,animals:animalsTxt,details})});
-  if(r.ok){ alert('Дякуємо! Ваш запит прийнято. Зв’яжемось найближчим часом.'); ['ev-contact','ev-location','ev-animals','ev-details'].forEach(i=>document.getElementById(i).value=''); }
-  else alert('Не вдалося надіслати. Спробуйте пізніше.');
+  if(r.ok){ alert(T[currentLang].al_evok); ['ev-contact','ev-location','ev-animals','ev-details'].forEach(i=>document.getElementById(i).value=''); }
+  else alert(T[currentLang].al_fail);
 }
 
 // CHATBOT
@@ -341,8 +341,9 @@ function sendChat(){const i=document.getElementById('cinp');const t=i.value.trim
 function quickMsg(t){document.getElementById('cinp').value=t;sendChat();}
 
 // DONATE
-const DI={'Monobank':{t:'Monobank банка',b:'Переказ на банку «Shelter Leroy».',r:[['📱','Посилання на банку'],['💬','Коментар: «Для тварин»'],['🤝','Дякуємо!']]},'PrivatBank':{t:'PrivatBank',b:'Картка організації.',r:[['💳','4149 xxxx xxxx xxxx'],['📄','Призначення: «Допомога шелтеру»']]},'PayPal':{t:'PayPal',b:'Для міжнародних донорів.',r:[['📧','saveanimals@org.ua'],['🌍','Будь-яка валюта']]},'IBAN':{t:'Банківський переказ',b:'Для юридичних осіб.',r:[['🏦','UA xx xxxx xxxx xxxx xxxx xxxx x'],['📋','ЄДРПОУ: xxxxxxxx']]}};
-function showDonate(type){const d=DI[type];document.getElementById('mt').textContent=d.t;document.getElementById('mb').textContent=d.b;document.getElementById('mr').innerHTML=d.r.map(([i,t])=>`<div class="mrow"><span>${i}</span><span>${t}</span></div>`).join('');document.getElementById('dm').classList.add('open');}
+const DI_T={uk:{'Monobank':{t:'Monobank банка',b:'Переказ на банку «Shelter Leroy».',r:[['📱','Посилання на банку'],['💬','Коментар: «Для тварин»'],['🤝','Дякуємо!']]},'PrivatBank':{t:'PrivatBank',b:'Картка організації.',r:[['💳','4149 xxxx xxxx xxxx'],['📄','Призначення: «Допомога шелтеру»']]},'PayPal':{t:'PayPal',b:'Для міжнародних донорів.',r:[['📧','saveanimals@org.ua'],['🌍','Будь-яка валюта']]},'IBAN':{t:'Банківський переказ',b:'Для юридичних осіб.',r:[['🏦','UA xx xxxx xxxx xxxx xxxx xxxx x'],['📋','ЄДРПОУ: xxxxxxxx']]}},
+en:{'Monobank':{t:'Monobank jar',b:'Transfer to the “Shelter Leroy” jar.',r:[['📱','Link to the jar'],['💬','Comment: “For the animals”'],['🤝','Thank you!']]},'PrivatBank':{t:'PrivatBank',b:'Organisation card.',r:[['💳','4149 xxxx xxxx xxxx'],['📄','Reference: “Help for the shelter”']]},'PayPal':{t:'PayPal',b:'For international donors.',r:[['📧','saveanimals@org.ua'],['🌍','Any currency']]},'IBAN':{t:'Bank transfer',b:'For legal entities.',r:[['🏦','UA xx xxxx xxxx xxxx xxxx xxxx x'],['📋','USREOU: xxxxxxxx']]}}};
+function showDonate(type){const d=(DI_T[currentLang]||DI_T.uk)[type];document.getElementById('mt').textContent=d.t;document.getElementById('mb').textContent=d.b;document.getElementById('mr').innerHTML=d.r.map(([i,t])=>`<div class="mrow"><span>${i}</span><span>${t}</span></div>`).join('');document.getElementById('dm').classList.add('open');}
 function closeDonate(){document.getElementById('dm').classList.remove('open');}
 document.getElementById('dm').addEventListener('click',function(e){if(e.target===this)closeDonate();});
 
@@ -373,7 +374,7 @@ function renderSchemePublic(){
   const emp=enclosures.filter(e=>e.status==='empty'&&e.code).length;
   const nof=enclosures.filter(e=>e.status==='nof').length;
   const s=document.getElementById('scm-summary');
-  if(s) s.textContent=`Зайнято: ${occ} · Порожніх: ${emp} · Не функціонує: ${nof}`;
+  if(s){const L=T[currentLang];s.textContent=`${L.scm_occ2}: ${occ} · ${L.scm_emp2}: ${emp} · ${L.scm_nof2}: ${nof}`;}
 }
 
 function applySettings(){
@@ -398,6 +399,67 @@ let currentLang = 'uk';
 
 const T = {
   uk: {
+    hero_eyebrow:'З 2022 РОКУ · 5 ОБЛАСТЕЙ · 2800+ ВРЯТОВАНИХ',
+    ac_sign:'Подаруй шанс<br>на справжнє<br>життя!',
+    ac_n1:'Малиш · 1 рік · хлопець', ac_n2:'Бусоля · 2 роки · дівчина', ac_n3:'Барон · 5 років · хлопець', ac_n4:'Ріка · 3 роки · дівчина',
+    sb1:'тварин знайшли дім', sb2:'областей охоплення', sb3:'виїздів на передову', sb4:'вольєрів у шелтері',
+    jt_tag:'Шлях тварини', jt_h:'ВІД ФРОНТУ —<br>ДО НОВОГО ДОМУ',
+    jt1_t:'Фронт', jt1_p:'Покинуті тварини в зоні бойових дій. Голод, страх, поранення.',
+    jt2_t:'Евакуація', jt2_p:'Виїзди наших волонтерів. Безпечне транспортування у тил.',
+    jt3_t:'Шелтер', jt3_p:'Лікування, соціалізація, догляд. Шанс відновитися.',
+    jt4_t:'Нова родина', jt4_p:'Постійні господарі. Тепло. Дім. Любов на все життя.',
+    scm_entry:'ЗАЇЗД', scm_cat:'КОТОБУДИНОК',
+    scm_note:'Для оновлення схеми —', scm_note_link:'адмін-панель',
+    scm_occ2:'Зайнято', scm_emp2:'Порожніх', scm_nof2:'Не функціонує',
+    proj_tag:'Ключові проєкти', proj_h:'Ініціативи',
+    tl1_h:'Початок місії', tl1_p:'ГО «Захист тварин України» починає роботу. Перші евакуації з Донеччини та Херсонщини.',
+    tl2_h:'Масштабування', tl2_p:'«Годівнички», #Водутваринам. 2 800+ тварин знайшли родини. Telegram 7 000 підписників.',
+    tl3_h:'Shelter Leroy відкрито', tl3_p:'Центр перетримки в Обухівці для евакуйованих собак.',
+    tl4_h:'3 417+ тварин евакуйовано', tl4_p:'Станом на грудень 2025. Передано 95 805 кг корму. 5 областей.',
+    sfe_tag:'Евакуація', sfe_h:'Що таке евакуація тварин', sfe_p:'Евакуація тварин — це не просто перевезення, це комплексна робота:',
+    sfe_list:'<li><strong>Безпека</strong> — робота з наляканими й агресивними тваринами</li><li><strong>Логістика</strong> — транспорт, клітки, маршрути</li><li><strong>Медичний супровід</strong> — перша допомога та лікування</li><li><strong>Тимчасове розміщення</strong> — притулки, перетримка, догляд</li>',
+    sfg_tag:'Масштаби', sfg_h:'Географія та масштаби роботи', sfg_p:'Регулярні евакуації з прифронтових територій:',
+    sfg_list:'<li>Донецька область</li><li>Херсонська область</li><li>Запорізька область</li><li>Харківська область</li><li>Сумська область</li>',
+    sfg_num:'Понад <span>3 417 тварин</span> евакуйовано', sfg_note:'(станом на грудень 2025 року)',
+    sfs_h:'Допомога після евакуації', sfs_p:'З літа 2024 року працює центр перетримки <strong>«Leroy Shelter»</strong>, який приймає евакуйованих собак з Донеччини та Дніпропетровщини.',
+    sfs_list:'<li>Безпека</li><li>Догляд</li><li>Шанс знайти нову родину</li>',
+    sfh_tag:'Гуманітарна допомога', sfh_h:'У цифрах',
+    sfh_list:'<li><strong style="color:var(--Y);">95 805 кг</strong> корму та м\'ясних продуктів</li><li><strong style="color:var(--Y);">8 000 кг</strong> корму притулкам Дніпра</li><li><strong style="color:var(--Y);">22 000 кг</strong> фруктів та круп для свійської худоби</li><li><strong style="color:var(--Y);">1 000 кг</strong> наповнювачів для котів і гризунів</li>',
+    sfh_p:'Допомога надходить також тваринам, якими опікуються військові у прифронтових зонах.',
+    sfa_tag:'ЗСУ', sfa_h:'Паралельна допомога ЗСУ', sfa_p:'Під час роботи з тваринами ми також:',
+    sfa_list:'<li>Допомагаємо з <strong>евакуацією автівок</strong></li><li>Передаємо <strong>посилки військовим</strong></li><li><strong>Зменшуємо ризики демаскування</strong> позицій, де тварини можуть видати присутність людей</li>',
+    sfp_tag:'Проєкти', sfp_h:'Ключові ініціативи',
+    sfp_list:'<li><strong>«Годівнички Зооцентру»</strong> — 47 станцій у прифронтових містах</li><li><strong>#Водутваринам</strong> — поїлки у Дніпрі, Гуляйполі та Часовому Яру</li><li><strong>«Корм замість подарунку»</strong> — люди дарують корм замість речей</li>',
+    sfpr_tag:'Партнерство', sfpr_h:'Це спільна мережа допомоги', sfpr_p:'Разом з партнерами по всій країні та за кордоном:', sfpr_more:'та інші',
+    join_tag:'Долучитись', sfc_h:'Стань частиною<br>тихого фронту',
+    sfc_p:'Волонтерство, донат, перетримка або просто поширення — кожна дія рятує життя.', sfc_btn2:'Евакуація тварин',
+    evs_tag:'Чотири напрямки', evs_h:'Що таке евакуація',
+    evz_tag:'Географія', evz_h:'Де ми працюємо', evz_p:'Регулярні евакуації з прифронтових територій.',
+    evz1:'Донецька', evz2:'Херсонська', evz3:'Запорізька', evz4:'Харківська', evz5:'Сумська', evz_obl:'обл.',
+    evr_list:'<li>Місце перебування тварини</li><li>Вид та кількість тварин</li><li>Контакт власника або очевидця</li><li>Будь-яка додаткова інформація</li>',
+    evf_l1:'Ваше ім\'я та телефон', evf_ph1:'Олена, +380 xx xxx xx xx',
+    evf_l2:'Місце перебування тварини', evf_ph2:'Місто, вулиця або орієнтир',
+    evf_l3:'Вид та кількість', evf_ph3:'3 собаки, 1 кіт...',
+    evf_l4:'Опис ситуації', evf_ph4:'Опишіть де знаходяться...',
+    hc1_h:'Донат', hc1_p:'Ваші кошти йдуть на корм, ветдопомогу, транспорт та утримання шелтеру. 100% — тваринам.',
+    do1:'🟡 Monobank (банка)', do4:'🏦 Банківський переказ',
+    hc2_h:'Волонтерство', hc2_p1:'Потрібні люди для виїздів, догляду, перевезення та онлайн-допомоги.',
+    hc2_p2:'— Виїзди в шелтер<br>— Тимчасова перетримка<br>— SMM та комунікації<br>— Пошук родин<br>— Корм та ліки',
+    hc3_h:'Взяти тварину', hc3_p1:'У шелтері понад 15 тварин, які чекають на постійний дім або перетримку.',
+    hc3_p2:'— Обрати в каталозі<br>— Зв\'язатись через форму<br>— Знайомство<br>— Договір<br>— Тварина їде додому!',
+    hc3_btn:'Дивитись тварин',
+    hf_tag:'Корм у шелтер', hf_h:'Корм замість подарунку', hf_p:'Купи пакет корму та привези в шелтер або передай з волонтером.',
+    hf1_t:'Сухий корм', hf1_p:'Для собак та котів. Будь-який виробник.',
+    hf2_t:'Вологий корм', hf2_p:'Особливо для поранених та хворих тварин.',
+    hf3_t:'Ветпрепарати', hf3_p:'Антипаразитарні, антибіотики, перев\'язувальні.',
+    ci_site:'Сайт',
+    fc1_h:'Шелтер', fc2_h:'Організація', fc3_h:'Допомога',
+    fl_team:'Команда', fl_mission:'Наша місія', fl_adopt:'Взяти тварину',
+    chat_hello:'Привіт! Запитай про тварин, донати чи волонтерство 🐾',
+    al_req:'Вкажіть ім\'я та контакт', al_ok:'Дякуємо! Зв\'яжемось найближчим часом.',
+    al_fail:'Не вдалося надіслати. Спробуйте пізніше.',
+    al_evreq:'Вкажіть контакт і місце перебування тварини',
+    al_evok:'Дякуємо! Ваш запит прийнято. Зв\'яжемось найближчим часом.',
     home:'Головна', animals:'Наші тварини', shelter:'Наш шелтер',
     team:'Суперкоманда', mission:'Про нас', help:'Допомогти',
     silentfront:'Тихий фронт', evacuation:'Евакуація', contacts:'Контакти', admin:'Адмін',
@@ -412,7 +474,7 @@ const T = {
     mv:['Людяність|Допомога тим, хто не може попросити самостійно','Гуманне ставлення|Тільки терпіння, любов і фахова допомога','Безперервна робота|Виїзди в 5 областях попри небезпеку','Нові родини|2 800+ тварин вже знайшли свій дім'],
     hero_h:'ТИХИЙ<br>ФРОНТ<br>ВОЛОНТЕРСТВА',
     hero_p:'Захист і порятунок тварин, які постраждали від війни. Евакуація, лікування та пошук нових родин.',
-    hero_b:['Наші тварини','Допомогти','Евакуація'],
+    hero_b:['💛 Підтримати шелтер','Наші тварини','Евакуація'],
     anim_tag:'Наші підопічні', anim_h:'Вони чекають<br>на тебе',
     anim_p:'Кожен з них пережив евакуацію і заслуговує на справжній дім.',
     f_all:'Всі', f_dog:'Собаки', f_cat:'Коти', f_sh:'В шелтері', f_fo:'На перетримці',
@@ -438,7 +500,7 @@ const T = {
     miss_b3h:'Географія', miss_b3p:'Регулярні евакуації з Донецької, Херсонської, Запорізької, Харківської та Сумської областей.',
     miss_b4h:'Цінності', miss_b4p:'Людяність, гуманне ставлення, допомога тим, хто не може попросити сам.',
     about_tag:'Про організацію', about_h:'ГО «Захист<br>тварин України»',
-    about_p:'З березня 2022 року ми працюємо з тваринами, які постраждали внаслідок воєнних дій.',
+    about_p:'З березня 2022 року ми працюємо з тваринами, які постраждали внаслідок воєнних дій. Тисячі тварин залишились без домівок і безпеки. Їхній порятунок — питання людяності.',
     tl_tag:'Хронологія', tl_h:'Як ми зростали',
     vals_tag:'Наші цінності', vals_h:'Філософія емпатії',
     sf_tag:'Тихий фронт', sf_h:'Тихий фронт<br>волонтерства',
@@ -450,9 +512,9 @@ const T = {
     evac_req_p:'Якщо ваша тварина або тварини знайомих перебувають у небезпечному районі — залиш заявку.',
     evac_req_btn:'Надіслати запит на евакуацію',
     help_tag:'Долучитись', help_h:'Допоможи<br>тваринам',
-    help_p:'Кожна гривня рятує життя. Кожна година волонтерства — це надія.',
+    help_p:'Кожна гривня рятує життя. Кожна година волонтерства — це надія для тварини у зоні бойових дій.',
     ct_tag:'Зв\'язатись з нами', ct_h:'Контакти',
-    ct_p:'Маєш питання, хочеш взяти тварину або стати волонтером? Напиши.',
+    ct_p:'Маєш питання, хочеш взяти тварину або стати волонтером? Напиши — відповімо швидко.',
     ct_form_h:'Написати нам',
     ct_lbl1:'Ваше ім\'я', ct_ph1:'Олена Шевченко',
     ct_lbl2:'Телефон або Email', ct_ph2:'+380 xx xxx xx xx або email@gmail.com',
@@ -464,7 +526,7 @@ const T = {
     footer_desc:'Волонтерський притулок для евакуйованих тварин. Частина ГО «Захист тварин України».',
     footer_loc:'Обухівка, Дніпропетровська обл. · з 2024 року',
     footer_copy:'© 2024 Shelter Leroy · ГО «Захист тварин України»',
-    footer_made:'Зроблено з ❤️ волонтерами',
+    footer_made:'Створено волонтерами (Едуард Сипало)',
     scm_tag:'Схема шелтеру', scm_h:'Карта вольєрів',
     scm_p:'Актуальна схема розміщення тварин у шелтері Leroy',
     leg_occ:'Зайнятий', leg_emp:'Порожній', leg_nof:'Не функціонує',
@@ -483,13 +545,73 @@ const T = {
     showcase_title:'ВІЗЬМИ ДРУГА<br>З ШЕЛТЕРУ',
     partners_label:'Партнери та підтримка',
     team_title:'Супер<br>команда',
-    miss_tag:'Про нас',
 
     val1_h:'Людяність',val1_p:'Порятунок тварин — питання людяності навіть у найважчі часи.',
-    val2_h:'Гуманне ставлення',val2_p:'Жодного насильства. Тільки терпіння, любов і фахова допомога.',
+    val2_h:'Гуманне ставлення',val2_p:'Тільки терпіння, любов і фахова допомога навіть наляканим тваринам.',
     val3_h:'Допомога без слів',val3_p:'Тварини не можуть попросити самі. Ми — їхній голос.',
   },
   en: {
+    hero_eyebrow:'SINCE 2022 · 5 REGIONS · 2,800+ RESCUED',
+    ac_sign:'Give a chance<br>at a real<br>life!',
+    ac_n1:'Malysh · 1 year · boy', ac_n2:'Busolia · 2 years · girl', ac_n3:'Baron · 5 years · boy', ac_n4:'Rika · 3 years · girl',
+    sb1:'animals found a home', sb2:'regions covered', sb3:'frontline trips', sb4:'enclosures in the shelter',
+    jt_tag:'An animal\'s journey', jt_h:'FROM THE FRONT —<br>TO A NEW HOME',
+    jt1_t:'Front', jt1_p:'Abandoned animals in the combat zone. Hunger, fear, injuries.',
+    jt2_t:'Evacuation', jt2_p:'Our volunteers head out. Safe transport to the rear.',
+    jt3_t:'Shelter', jt3_p:'Treatment, socialisation, care. A chance to recover.',
+    jt4_t:'New family', jt4_p:'Permanent owners. Warmth. Home. Love for life.',
+    scm_entry:'ENTRANCE', scm_cat:'CAT HOUSE',
+    scm_note:'To update the map —', scm_note_link:'admin panel',
+    scm_occ2:'Occupied', scm_emp2:'Empty', scm_nof2:'Out of service',
+    proj_tag:'Key projects', proj_h:'Initiatives',
+    tl1_h:'The mission begins', tl1_p:'Save Animals Ukraine NGO starts its work. First evacuations from Donetsk and Kherson regions.',
+    tl2_h:'Scaling up', tl2_p:'Feeding stations, #WaterForAnimals. 2,800+ animals found families. 7,000 Telegram subscribers.',
+    tl3_h:'Shelter Leroy opens', tl3_p:'A care centre in Obukhivka for evacuated dogs.',
+    tl4_h:'3,417+ animals evacuated', tl4_p:'As of December 2025. 95,805 kg of food delivered. 5 regions.',
+    sfe_tag:'Evacuation', sfe_h:'What animal evacuation means', sfe_p:'Animal evacuation is more than transportation — it is complex work:',
+    sfe_list:'<li><strong>Safety</strong> — working with frightened and aggressive animals</li><li><strong>Logistics</strong> — transport, crates, routes</li><li><strong>Medical support</strong> — first aid and treatment</li><li><strong>Temporary housing</strong> — shelters, fostering, care</li>',
+    sfg_tag:'Scale', sfg_h:'Geography and scale of our work', sfg_p:'Regular evacuations from frontline territories:',
+    sfg_list:'<li>Donetsk region</li><li>Kherson region</li><li>Zaporizhzhia region</li><li>Kharkiv region</li><li>Sumy region</li>',
+    sfg_num:'Over <span>3,417 animals</span> evacuated', sfg_note:'(as of December 2025)',
+    sfs_h:'Help after evacuation', sfs_p:'Since summer 2024, the <strong>Leroy Shelter</strong> care centre has been taking in evacuated dogs from Donetsk and Dnipropetrovsk regions.',
+    sfs_list:'<li>Safety</li><li>Care</li><li>A chance to find a new family</li>',
+    sfh_tag:'Humanitarian aid', sfh_h:'In numbers',
+    sfh_list:'<li><strong style="color:var(--Y);">95,805 kg</strong> of food and meat products</li><li><strong style="color:var(--Y);">8,000 kg</strong> of food for Dnipro shelters</li><li><strong style="color:var(--Y);">22,000 kg</strong> of fruit and grain for livestock</li><li><strong style="color:var(--Y);">1,000 kg</strong> of litter for cats and rodents</li>',
+    sfh_p:'Aid also reaches animals cared for by soldiers in frontline areas.',
+    sfa_tag:'Armed Forces', sfa_h:'Parallel support for the Armed Forces', sfa_p:'While working with animals we also:',
+    sfa_list:'<li>Help with <strong>vehicle evacuation</strong></li><li>Deliver <strong>parcels to soldiers</strong></li><li><strong>Reduce unmasking risks</strong> at positions where animals could reveal human presence</li>',
+    sfp_tag:'Projects', sfp_h:'Key initiatives',
+    sfp_list:'<li><strong>Zoocentre Feeders</strong> — 47 stations in frontline cities</li><li><strong>#WaterForAnimals</strong> — water bowls in Dnipro, Huliaipole and Chasiv Yar</li><li><strong>Food Instead of a Gift</strong> — people give food instead of presents</li>',
+    sfpr_tag:'Partnership', sfpr_h:'A shared network of help', sfpr_p:'Together with partners across the country and abroad:', sfpr_more:'and others',
+    join_tag:'Get involved', sfc_h:'Become part of<br>the silent front',
+    sfc_p:'Volunteering, donating, fostering or simply sharing — every action saves lives.', sfc_btn2:'Animal evacuation',
+    evs_tag:'Four directions', evs_h:'What evacuation means',
+    evz_tag:'Geography', evz_h:'Where we work', evz_p:'Regular evacuations from frontline territories.',
+    evz1:'Donetsk', evz2:'Kherson', evz3:'Zaporizhzhia', evz4:'Kharkiv', evz5:'Sumy', evz_obl:'region',
+    evr_list:'<li>Where the animal is located</li><li>Type and number of animals</li><li>Owner or witness contact</li><li>Any additional information</li>',
+    evf_l1:'Your name and phone', evf_ph1:'Olena, +380 xx xxx xx xx',
+    evf_l2:'Animal location', evf_ph2:'City, street or landmark',
+    evf_l3:'Type and number', evf_ph3:'3 dogs, 1 cat...',
+    evf_l4:'Describe the situation', evf_ph4:'Describe where they are...',
+    hc1_h:'Donate', hc1_p:'Your funds go to food, vet care, transport and shelter upkeep. 100% goes to the animals.',
+    do1:'🟡 Monobank (jar)', do4:'🏦 Bank transfer',
+    hc2_h:'Volunteering', hc2_p1:'We need people for field trips, care, transport and online help.',
+    hc2_p2:'— Shelter visits<br>— Temporary fostering<br>— SMM & communications<br>— Finding families<br>— Food & medicine',
+    hc3_h:'Adopt an animal', hc3_p1:'Over 15 animals at the shelter are waiting for a permanent home or foster care.',
+    hc3_p2:'— Choose in the catalogue<br>— Contact us via the form<br>— Meet the animal<br>— Sign the agreement<br>— The animal goes home!',
+    hc3_btn:'See the animals',
+    hf_tag:'Food for the shelter', hf_h:'Food instead of a gift', hf_p:'Buy a bag of food and bring it to the shelter or send it with a volunteer.',
+    hf1_t:'Dry food', hf1_p:'For dogs and cats. Any brand.',
+    hf2_t:'Wet food', hf2_p:'Especially for injured and sick animals.',
+    hf3_t:'Vet supplies', hf3_p:'Antiparasitics, antibiotics, dressings.',
+    ci_site:'Website',
+    fc1_h:'Shelter', fc2_h:'Organisation', fc3_h:'Help',
+    fl_team:'Team', fl_mission:'Our mission', fl_adopt:'Adopt an animal',
+    chat_hello:'Hi! Ask about animals, donations or volunteering 🐾',
+    al_req:'Please provide your name and contact', al_ok:'Thank you! We will get back to you soon.',
+    al_fail:'Failed to send. Please try again later.',
+    al_evreq:'Please provide a contact and the animal\'s location',
+    al_evok:'Thank you! Your request has been received. We will contact you soon.',
     home:'Home', animals:'Our Animals', shelter:'Our Shelter',
     team:'Super Team', mission:'About Us', help:'Help Us',
     silentfront:'Silent Front', evacuation:'Evacuation', contacts:'Contacts', admin:'Admin',
@@ -504,7 +626,7 @@ const T = {
     mv:['Humanity|Help for those who cannot ask on their own','Humane care|Only patience, love and professional help','Non-stop work|Missions in 5 regions despite the danger','New families|2 800+ animals have already found their home'],
     hero_h:'THE SILENT<br>FRONT OF<br>VOLUNTEERING',
     hero_p:'Protection and rescue of animals affected by war. Evacuation, treatment and finding new families.',
-    hero_b:['Our Animals','Help Us','Evacuation'],
+    hero_b:['💛 Support the shelter','Our Animals','Evacuation'],
     anim_tag:'Our Residents', anim_h:'They are waiting<br>for you',
     anim_p:'Each of them survived evacuation and deserves a real home.',
     f_all:'All', f_dog:'Dogs', f_cat:'Cats', f_sh:'In Shelter', f_fo:'In Foster',
@@ -530,7 +652,7 @@ const T = {
     miss_b3h:'Geography', miss_b3p:'Regular evacuations from Donetsk, Kherson, Zaporizhzhia, Kharkiv and Sumy regions.',
     miss_b4h:'Values', miss_b4p:'Humanity, humane treatment, help for those who cannot ask themselves.',
     about_tag:'About the NGO', about_h:'Save Animals<br>Ukraine NGO',
-    about_p:'Since March 2022 we have been working with animals affected by the war.',
+    about_p:'Since March 2022 we have been working with animals affected by the war. Thousands of animals were left without homes or safety. Their rescue is a matter of humanity.',
     tl_tag:'Timeline', tl_h:'How we grew',
     vals_tag:'Our values', vals_h:'Philosophy of empathy',
     sf_tag:'Silent Front', sf_h:'The silent front<br>of volunteering',
@@ -542,9 +664,9 @@ const T = {
     evac_req_p:'If your animal or a friend\'s animal is in a dangerous area — submit a request.',
     evac_req_btn:'Submit evacuation request',
     help_tag:'Get Involved', help_h:'Help<br>the animals',
-    help_p:'Every hryvnia saves a life. Every hour of volunteering is hope.',
+    help_p:'Every hryvnia saves a life. Every hour of volunteering is hope for an animal in the combat zone.',
     ct_tag:'Get in touch', ct_h:'Contacts',
-    ct_p:'Have a question, want to adopt or volunteer? Write to us.',
+    ct_p:'Have a question, want to adopt or volunteer? Write to us — we reply quickly.',
     ct_form_h:'Write to us',
     ct_lbl1:'Your name', ct_ph1:'Jane Smith',
     ct_lbl2:'Phone or Email', ct_ph2:'+380 xx xxx xx xx or email@gmail.com',
@@ -556,7 +678,7 @@ const T = {
     footer_desc:'A volunteer shelter for evacuated animals. Part of Save Animals Ukraine NGO.',
     footer_loc:'Obuhivka, Dnipropetrovsk region · since 2024',
     footer_copy:'© 2024 Shelter Leroy · Save Animals Ukraine NGO',
-    footer_made:'Made with ❤️ by volunteers',
+    footer_made:'Created by volunteers (Eduard Sypalo)',
     scm_tag:'Shelter map', scm_h:'Enclosure map',
     scm_p:'Current layout of animals in Leroy Shelter',
     leg_occ:'Occupied', leg_emp:'Empty', leg_nof:'Non-functional',
@@ -574,10 +696,9 @@ const T = {
     showcase_title:'TAKE A FRIEND<br>FROM THE SHELTER',
     partners_label:'Partners & Support',
     team_title:'Super<br>Team',
-    miss_tag:'About Us',
 
     val1_h:'Humanity',val1_p:'Rescuing animals is a matter of humanity even in the hardest times.',
-    val2_h:'Humane care',val2_p:'No violence. Only patience, love and professional help.',
+    val2_h:'Humane care',val2_p:'Only patience, love and professional help, even for frightened animals.',
     val3_h:'Help without words',val3_p:'Animals cannot ask for themselves. We are their voice.',
 
   }
@@ -695,6 +816,9 @@ function setLang(lang) {
   document.querySelectorAll('.fb').forEach((b, i) => {
     if (L[fbKeys[i]]) b.textContent = L[fbKeys[i]];
   });
+
+  // ── Scheme summary line ──────────────────────────────────
+  if (typeof enclosures !== 'undefined' && enclosures.length) renderSchemePublic();
 }
 
 // Override animalCard to use currentLang
