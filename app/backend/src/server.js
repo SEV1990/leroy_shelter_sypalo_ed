@@ -11,7 +11,7 @@ import { db } from './db.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
 const FRONTEND = path.join(ROOT, '..', 'frontend');
-const UPLOADS = path.join(ROOT, 'uploads');
+const UPLOADS = process.env.UPLOADS_DIR || path.join(ROOT, 'uploads');
 fs.mkdirSync(UPLOADS, { recursive: true });
 
 const PORT = process.env.PORT || 3000;

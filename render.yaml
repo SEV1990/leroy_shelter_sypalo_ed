@@ -1,0 +1,29 @@
+# Render Blueprint — автоматичне налаштування сайту Shelter Leroy.
+# Як використати: на render.com → New → Blueprint → підключити цей репозиторій.
+# Render прочитає цей файл і створить веб-сервіс + постійний диск + змінні.
+# Єдине, що треба ввести вручну, — ADMIN_PASSWORD (пароль адмінки).
+services:
+  - type: web
+    name: leroy-shelter
+    runtime: node
+    plan: starter            # платний рівень: завжди увімкнений + постійний диск
+    region: frankfurt        # найближчий до України регіон
+    buildCommand: cd app/backend && npm install
+    startCommand: cd app/backend && npm start
+    healthCheckPath: /
+    autoDeploy: true         # новий пуш у GitHub → автоматичний редеплой
+    disk:
+      name: data
+      mountPath: /var/data   # постійний диск: тут житимуть база і завантажені фото
+      sizeGB: 1
+    envVars:
+      - key: DB_PATH
+        value: /var/data/shelter.sqlite
+      - key: UPLOADS_DIR
+        value: /var/data/uploads
+      - key: NODE_VERSION
+        value: "20"
+      - key: JWT_SECRET
+        generateValue: true  # Render згенерує надійний секрет сам
+      - key: ADMIN_PASSWORD
+        sync: false          # введеш вручну в дашборді (пароль входу в адмінку)
