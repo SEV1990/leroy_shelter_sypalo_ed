@@ -103,3 +103,17 @@ export const SEED_SHOWCASE = [
   { kind: 'showcase', sort: 2, data: { photo: '/assets/img/showcase3.jpg', caption_uk: 'Shelter Leroy · Обухівка', caption_en: 'Shelter Leroy · Obukhivka' } },
   { kind: 'showcase', sort: 3, data: { photo: '/assets/img/showcase2.jpg', caption_uk: 'Кожен знаходить свого друга', caption_en: 'Everyone finds their friend' } },
 ];
+
+// Partner name chips for the scrolling strip on the home page.
+export const SEED_PARTNER_CHIPS = [
+  { kind: 'partner_chip', sort: 1, data: { name: 'UAnimals' } },
+  { kind: 'partner_chip', sort: 2, data: { name: 'We Support Ukraine' } },
+  { kind: 'partner_chip', sort: 3, data: { name: 'United for Animals' } },
+  { kind: 'partner_chip', sort: 4, data: { name: 'Схід SOS' } },
+  { kind: 'partner_chip', sort: 5, data: { name: "Hill's" } },
+  { kind: 'partner_chip', sort: 6, data: { name: 'Барбус' } },
+  { kind: 'partner_chip', sort: 7, data: { name: 'Життєлюб' } },
+  { kind: 'partner_chip', sort: 8, data: { name: 'Save Pets of Ukraine' } },
+  { kind: 'partner_chip', sort: 9, data: { name: 'Neftek' } },
+  { kind: 'partner_chip', sort: 10, data: { name: 'Leroy Real' } },
+];

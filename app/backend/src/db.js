@@ -1,7 +1,7 @@
 import Database from 'better-sqlite3';
 import { fileURLToPath } from 'url';
 import path from 'path';
-import { SEED_ANIMALS, SEED_TEAM, SEED_ENCLOSURES, SEED_SETTINGS, SEED_COLLECTIONS, SEED_SHOWCASE } from './seed.js';
+import { SEED_ANIMALS, SEED_TEAM, SEED_ENCLOSURES, SEED_SETTINGS, SEED_COLLECTIONS, SEED_SHOWCASE, SEED_PARTNER_CHIPS } from './seed.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DB_PATH = process.env.DB_PATH || path.join(__dirname, '..', 'data.sqlite');
@@ -95,6 +95,15 @@ if (showcaseCount === 0) {
   const tx = db.transaction((rows) => rows.forEach((r) => insCol.run(r.kind, r.sort, JSON.stringify(r.data))));
   tx(SEED_SHOWCASE);
   console.log(`[db] seeded ${SEED_SHOWCASE.length} showcase rows`);
+}
+
+// partner strip chips: back-fill if this kind has no rows yet (runs on older DBs too)
+const chipCount = db.prepare("SELECT COUNT(*) AS n FROM collections WHERE kind = 'partner_chip'").get().n;
+if (chipCount === 0) {
+  const insCol = db.prepare('INSERT INTO collections (kind,sort,data) VALUES (?,?,?)');
+  const tx = db.transaction((rows) => rows.forEach((r) => insCol.run(r.kind, r.sort, JSON.stringify(r.data))));
+  tx(SEED_PARTNER_CHIPS);
+  console.log(`[db] seeded ${SEED_PARTNER_CHIPS.length} partner_chip rows`);
 }
 
 // settings: insert any missing defaults (never overwrite existing)

@@ -249,7 +249,7 @@ app.put('/api/settings', auth, (req, res) => {
 // ════════════════════════════════════════════════════════════
 //  COLLECTIONS (stats, partners, evac steps, chat — bilingual)
 // ════════════════════════════════════════════════════════════
-const COLLECTION_KINDS = ['stat', 'evac_stat', 'partner', 'evac_step', 'chat', 'showcase'];
+const COLLECTION_KINDS = ['stat', 'evac_stat', 'partner', 'partner_chip', 'evac_step', 'chat', 'showcase'];
 
 app.get('/api/collections/:kind', (req, res) => {
   if (!COLLECTION_KINDS.includes(req.params.kind)) return res.status(404).json({ error: 'unknown kind' });

@@ -6,7 +6,7 @@ let animals=[];
 let team=[];
 let enclosures=[];
 let settings={};
-let collections={stat:[],evac_stat:[],partner:[],evac_step:[],chat:[],showcase:[]};
+let collections={stat:[],evac_stat:[],partner:[],partner_chip:[],evac_step:[],chat:[],showcase:[]};
 
 async function api(path,opts={}){
   opts.headers=opts.headers||{};
@@ -95,7 +95,7 @@ function adoptClick(name){showPage('contacts');setTimeout(()=>{const s=document.
 const ADM_TABS={
   animals:renderAdmin, team:renderTeamAdmin, scheme:renderEnclosuresAdmin,
   texts:renderTextsAdmin, photos:renderPhotosAdmin, gallery:()=>renderColAdmin('showcase'),
-  stats:async()=>{ await renderColAdmin('stat'); await renderColAdmin('evac_stat'); }, partners:()=>renderColAdmin('partner'),
+  stats:async()=>{ await renderColAdmin('stat'); await renderColAdmin('evac_stat'); }, partners:async()=>{ await renderColAdmin('partner_chip'); await renderColAdmin('partner'); },
   evac:()=>renderColAdmin('evac_step'), chat:()=>renderColAdmin('chat'),
   contacts:loadSettingsForm, requests:renderRequests,
 };
@@ -998,8 +998,16 @@ function renderEvacStats(){
   el.innerHTML=collections.evac_stat.map(s=>`<div class="evst"><div class="evst-n">${esc(s.value||'')}</div><div class="evst-l">${nl2br(pick(s,'label'))}</div></div>`).join('');
 }
 function renderPartners(){
-  const el=document.getElementById('partners-grid'); if(!el)return;
+  const el=document.getElementById('proj-grid'); if(!el)return;
+  if(!collections.partner.length)return; // keep static fallback
   el.innerHTML=collections.partner.map(p=>`<div class="pcard"><h3>${esc(pick(p,'title'))}</h3><p>${esc(pick(p,'text'))}</p></div>`).join('');
+}
+function renderPartnerChips(){
+  const el=document.getElementById('partners-grid'); if(!el)return;
+  if(!collections.partner_chip.length)return; // keep static fallback
+  const chips=collections.partner_chip.map(c=>`<div class="pchip">${esc(c.name||'')}</div>`).join('');
+  el.innerHTML=chips+chips; // duplicated for the seamless marquee loop
+  el.dataset.dup='1';
 }
 function renderEvacSteps(){
   const el=document.getElementById('evs-grid'); if(!el)return;
@@ -1018,7 +1026,7 @@ function renderShowcase(){
     return `<figure class="showcase-item"><img src="${esc(it.photo||'')}" alt="${cap}" loading="lazy">${cap?`<figcaption class="showcase-cap">${cap}</figcaption>`:''}</figure>`;
   }).join('');
 }
-function renderDynamic(){ renderStats(); renderEvacStats(); renderPartners(); renderEvacSteps(); renderChatQuick(); renderShowcase(); }
+function renderDynamic(){ renderStats(); renderEvacStats(); renderPartners(); renderPartnerChips(); renderEvacSteps(); renderChatQuick(); renderShowcase(); }
 
 // ── Chatbot (data-driven, bilingual) — overrides earlier stubs ──
 function chatReplyFor(text){
@@ -1061,7 +1069,7 @@ const _setLangBase=setLang;
 setLang=function(l){ _setLangBase(l); renderDynamic(); };
 
 async function loadContent(){
-  await Promise.all([fetchSettings(),fetchCollection('stat'),fetchCollection('evac_stat'),fetchCollection('partner'),fetchCollection('evac_step'),fetchCollection('chat'),fetchCollection('showcase')]);
+  await Promise.all([fetchSettings(),fetchCollection('stat'),fetchCollection('evac_stat'),fetchCollection('partner'),fetchCollection('evac_step'),fetchCollection('chat'),fetchCollection('showcase'),fetchCollection('partner_chip')]);
   mergeTextOverrides();
   applyPhotos();
   applySettings();
@@ -1132,12 +1140,13 @@ async function uploadPhoto(slot){
 const COL_SCHEMA={
   stat:{heading:'Лічильники «Тихий фронт»',fields:[['value','Число','in'],['label_uk','Підпис (UA)','in'],['label_en','Підпис (EN)','in']],cols:['value','label_uk']},
   evac_stat:{heading:'Цифри на сторінці «Евакуація»',fields:[['value','Число','in'],['label_uk','Підпис (UA, новий рядок = перенос)','area'],['label_en','Підпис (EN, новий рядок = перенос)','area']],cols:['value','label_uk']},
-  partner:{fields:[['title_uk','Назва (UA)','in'],['title_en','Назва (EN)','in'],['text_uk','Опис (UA)','area'],['text_en','Опис (EN)','area']],cols:['title_uk','title_en']},
+  partner_chip:{heading:'Стрічка партнерів на головній (лише назви)',fields:[['name','Назва','in']],cols:['name']},
+  partner:{heading:'Картки ініціатив (сторінка «Тихий фронт»)',fields:[['title_uk','Назва (UA)','in'],['title_en','Назва (EN)','in'],['text_uk','Опис (UA)','area'],['text_en','Опис (EN)','area']],cols:['title_uk','title_en']},
   evac_step:{fields:[['num','№','in'],['title_uk','Заголовок (UA)','in'],['title_en','Заголовок (EN)','in'],['text_uk','Текст (UA)','area'],['text_en','Текст (EN)','area']],cols:['num','title_uk']},
   chat:{fields:[['keyword','Ключове слово','in'],['quick_uk','Кнопка (UA)','in'],['quick_en','Кнопка (EN)','in'],['reply_uk','Відповідь (UA)','area'],['reply_en','Відповідь (EN)','area']],cols:['keyword','quick_uk']},
   showcase:{heading:'Фотогалерея на головній («Подаруй шанс»)',fields:[['photo','Фото','file'],['caption_uk','Підпис (UA, необов’язково)','in'],['caption_en','Підпис (EN, optional)','in']],cols:['photo','caption_uk']},
 };
-const COL_SEC={stat:'stats',evac_stat:'stats',partner:'partners',evac_step:'evac',chat:'chat',showcase:'gallery'};
+const COL_SEC={stat:'stats',evac_stat:'stats',partner:'partners',partner_chip:'partners',evac_step:'evac',chat:'chat',showcase:'gallery'};
 function colHeader(kind,c){ const f=COL_SCHEMA[kind].fields.find(x=>x[0]===c); return f?f[1]:c; }
 function colFormHTML(kind){
   const s=COL_SCHEMA[kind];
@@ -1238,6 +1247,6 @@ async function delCol(kind,id){
 }
 async function refreshPublicCollection(kind){
   await fetchCollection(kind);
-  ({stat:renderStats,evac_stat:renderEvacStats,partner:renderPartners,evac_step:renderEvacSteps,chat:renderChatQuick,showcase:renderShowcase}[kind]||(()=>{}))();
+  ({stat:renderStats,evac_stat:renderEvacStats,partner:renderPartners,partner_chip:renderPartnerChips,evac_step:renderEvacSteps,chat:renderChatQuick,showcase:renderShowcase}[kind]||(()=>{}))();
 }
 
