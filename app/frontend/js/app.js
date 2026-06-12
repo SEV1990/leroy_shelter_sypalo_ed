@@ -29,7 +29,11 @@ async function fetchCollection(kind){ collections[kind] = await getJSON('/collec
 const PAGES=['home','animals','shelter','team','mission','schememap','help','about','silentfront','evacuation','contacts','admin'];
 // Merged nav mapping
 const NAV_MAP={'schememap':'shelter','about':'mission'};
+let currentPage='home';
 function showPage(n){
+  if(!PAGES.includes(n))n='home';
+  currentPage=n;
+  if((location.hash.slice(1)||'home')!==n)location.hash=n; // sync URL ('' counts as home)
   PAGES.forEach(p=>{
     document.getElementById('page-'+p).classList.remove('active');
     const l=document.getElementById('nav-'+p);if(l)l.classList.remove('active');
@@ -42,6 +46,15 @@ function showPage(n){
   if(n==='animals')renderAnimals('all');
   if(n==='admin')initAdmin();
 }
+// Back/Forward buttons + direct links like /#animals
+window.addEventListener('hashchange',()=>{
+  const n=location.hash.slice(1)||'home';
+  if(PAGES.includes(n)&&n!==currentPage)showPage(n);
+});
+(function(){
+  const n=location.hash.slice(1);
+  if(PAGES.includes(n)&&n!=='home')showPage(n);
+})();
 
 // ADMIN ACCESS (JWT-based)
 function isAuthed(){ return !!authToken; }
