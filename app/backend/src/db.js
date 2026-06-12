@@ -1,7 +1,7 @@
 import Database from 'better-sqlite3';
 import { fileURLToPath } from 'url';
 import path from 'path';
-import { SEED_ANIMALS, SEED_TEAM, SEED_ENCLOSURES, SEED_SETTINGS, SEED_COLLECTIONS } from './seed.js';
+import { SEED_ANIMALS, SEED_TEAM, SEED_ENCLOSURES, SEED_SETTINGS, SEED_COLLECTIONS, SEED_SHOWCASE } from './seed.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DB_PATH = process.env.DB_PATH || path.join(__dirname, '..', 'data.sqlite');
@@ -86,6 +86,15 @@ if (colCount === 0) {
   const tx = db.transaction((rows) => rows.forEach((r) => insCol.run(r.kind, r.sort, JSON.stringify(r.data))));
   tx(SEED_COLLECTIONS);
   console.log(`[db] seeded ${SEED_COLLECTIONS.length} collection rows`);
+}
+
+// showcase gallery: back-fill if this kind has no rows yet (runs on older DBs too)
+const showcaseCount = db.prepare("SELECT COUNT(*) AS n FROM collections WHERE kind = 'showcase'").get().n;
+if (showcaseCount === 0) {
+  const insCol = db.prepare('INSERT INTO collections (kind,sort,data) VALUES (?,?,?)');
+  const tx = db.transaction((rows) => rows.forEach((r) => insCol.run(r.kind, r.sort, JSON.stringify(r.data))));
+  tx(SEED_SHOWCASE);
+  console.log(`[db] seeded ${SEED_SHOWCASE.length} showcase rows`);
 }
 
 // settings: insert any missing defaults (never overwrite existing)

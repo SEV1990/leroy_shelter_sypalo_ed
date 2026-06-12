@@ -6,7 +6,7 @@ let animals=[];
 let team=[];
 let enclosures=[];
 let settings={};
-let collections={stat:[],evac_stat:[],partner:[],evac_step:[],chat:[]};
+let collections={stat:[],evac_stat:[],partner:[],evac_step:[],chat:[],showcase:[]};
 
 async function api(path,opts={}){
   opts.headers=opts.headers||{};
@@ -94,7 +94,7 @@ function adoptClick(name){showPage('contacts');setTimeout(()=>{const s=document.
 // ── ADMIN: tab switching ─────────────────────────────────
 const ADM_TABS={
   animals:renderAdmin, team:renderTeamAdmin, scheme:renderEnclosuresAdmin,
-  texts:renderTextsAdmin, photos:renderPhotosAdmin,
+  texts:renderTextsAdmin, photos:renderPhotosAdmin, gallery:()=>renderColAdmin('showcase'),
   stats:async()=>{ await renderColAdmin('stat'); await renderColAdmin('evac_stat'); }, partners:()=>renderColAdmin('partner'),
   evac:()=>renderColAdmin('evac_step'), chat:()=>renderColAdmin('chat'),
   contacts:loadSettingsForm, requests:renderRequests,
@@ -466,6 +466,8 @@ const T = {
     ms_body:'ГО «Захист тварин України» з 2022 року рятує тварин з прифронтових зон. З 2024-го діє Leroy Shelter — безпечне місце для евакуйованих собак і котів.',
     ms_title:'Їхній порятунок —<br>питання людяності<br>навіть у найважчі часи',
     nav_sub:'Другий шанс на безпечне життя для евакуйованих тварин',
+    showcase_tag:'Подаруй шанс',
+    showcase_title:'ВІЗЬМИ ДРУГА<br>З ШЕЛТЕРУ',
     partners_label:'Партнери та підтримка',
     team_title:'Супер<br>команда',
     miss_tag:'Про нас',
@@ -555,6 +557,8 @@ const T = {
     ms_body:'Save Animals Ukraine has been rescuing animals from frontline areas since 2022. Since 2024, Leroy Shelter has been a safe haven for evacuated dogs and cats.',
     ms_title:'Their rescue is<br>a matter of humanity<br>even in the hardest times',
     nav_sub:'A second chance at a safe life for evacuated animals',
+    showcase_tag:'Give a chance',
+    showcase_title:'TAKE A FRIEND<br>FROM THE SHELTER',
     partners_label:'Partners & Support',
     team_title:'Super<br>Team',
     miss_tag:'About Us',
@@ -1005,7 +1009,16 @@ function renderChatQuick(){
   const q=document.getElementById('cquick'); if(!q)return;
   q.innerHTML=collections.chat.filter(c=>pick(c,'quick')).map(c=>`<button class="cqb" onclick="quickChat(${c.id})">${esc(pick(c,'quick'))}</button>`).join('');
 }
-function renderDynamic(){ renderStats(); renderEvacStats(); renderPartners(); renderEvacSteps(); renderChatQuick(); }
+function renderShowcase(){
+  const el=document.getElementById('showcase-grid'); if(!el)return;
+  const sec=document.getElementById('showcase');
+  if(sec) sec.style.display=collections.showcase.length?'':'none';
+  el.innerHTML=collections.showcase.map(it=>{
+    const cap=esc(pick(it,'caption'));
+    return `<figure class="showcase-item"><img src="${esc(it.photo||'')}" alt="${cap}" loading="lazy">${cap?`<figcaption class="showcase-cap">${cap}</figcaption>`:''}</figure>`;
+  }).join('');
+}
+function renderDynamic(){ renderStats(); renderEvacStats(); renderPartners(); renderEvacSteps(); renderChatQuick(); renderShowcase(); }
 
 // ── Chatbot (data-driven, bilingual) — overrides earlier stubs ──
 function chatReplyFor(text){
@@ -1048,7 +1061,7 @@ const _setLangBase=setLang;
 setLang=function(l){ _setLangBase(l); renderDynamic(); };
 
 async function loadContent(){
-  await Promise.all([fetchSettings(),fetchCollection('stat'),fetchCollection('evac_stat'),fetchCollection('partner'),fetchCollection('evac_step'),fetchCollection('chat')]);
+  await Promise.all([fetchSettings(),fetchCollection('stat'),fetchCollection('evac_stat'),fetchCollection('partner'),fetchCollection('evac_step'),fetchCollection('chat'),fetchCollection('showcase')]);
   mergeTextOverrides();
   applyPhotos();
   applySettings();
@@ -1122,14 +1135,20 @@ const COL_SCHEMA={
   partner:{fields:[['title_uk','Назва (UA)','in'],['title_en','Назва (EN)','in'],['text_uk','Опис (UA)','area'],['text_en','Опис (EN)','area']],cols:['title_uk','title_en']},
   evac_step:{fields:[['num','№','in'],['title_uk','Заголовок (UA)','in'],['title_en','Заголовок (EN)','in'],['text_uk','Текст (UA)','area'],['text_en','Текст (EN)','area']],cols:['num','title_uk']},
   chat:{fields:[['keyword','Ключове слово','in'],['quick_uk','Кнопка (UA)','in'],['quick_en','Кнопка (EN)','in'],['reply_uk','Відповідь (UA)','area'],['reply_en','Відповідь (EN)','area']],cols:['keyword','quick_uk']},
+  showcase:{heading:'Фотогалерея на головній («Подаруй шанс»)',fields:[['photo','Фото','file'],['caption_uk','Підпис (UA, необов’язково)','in'],['caption_en','Підпис (EN, optional)','in']],cols:['photo','caption_uk']},
 };
-const COL_SEC={stat:'stats',evac_stat:'stats',partner:'partners',evac_step:'evac',chat:'chat'};
+const COL_SEC={stat:'stats',evac_stat:'stats',partner:'partners',evac_step:'evac',chat:'chat',showcase:'gallery'};
 function colHeader(kind,c){ const f=COL_SCHEMA[kind].fields.find(x=>x[0]===c); return f?f[1]:c; }
 function colFormHTML(kind){
   const s=COL_SCHEMA[kind];
-  const fields=s.fields.map(([f,label,type])=>type==='area'
-    ?`<div class="fg"><label>${label}</label><textarea id="col-${kind}-${f}"></textarea></div>`
-    :`<div class="fg"><label>${label}</label><input type="text" id="col-${kind}-${f}"></div>`).join('');
+  const fields=s.fields.map(([f,label,type])=>{
+    if(type==='area') return `<div class="fg"><label>${label}</label><textarea id="col-${kind}-${f}"></textarea></div>`;
+    if(type==='file') return `<div class="fg"><label>${label}</label>`
+      +`<img id="col-${kind}-${f}-prev" src="" alt="" style="max-width:180px;max-height:120px;border-radius:4px;display:none;margin:6px 0 10px;object-fit:cover;background:#eee;">`
+      +`<input type="hidden" id="col-${kind}-${f}">`
+      +`<input type="file" id="col-${kind}-${f}-file" accept="image/*"></div>`;
+    return `<div class="fg"><label>${label}</label><input type="text" id="col-${kind}-${f}"></div>`;
+  }).join('');
   const heading=s.heading?`<div style="margin:6px 0 14px;font-weight:800;color:var(--K);text-transform:uppercase;font-size:14px;letter-spacing:.5px;">${s.heading}</div>`:'';
   return heading+`<div class="adm-form" style="margin-bottom:28px;">
     <h3 id="col-${kind}-title">Новий запис</h3>
@@ -1148,13 +1167,24 @@ async function renderColAdmin(kind){
   await fetchCollection(kind);
   const s=COL_SCHEMA[kind];
   document.getElementById('coltb-'+kind).innerHTML=collections[kind].map(it=>
-    `<tr>${s.cols.map(c=>'<td>'+esc(it[c]||'')+'</td>').join('')}<td><button class="edit-btn" onclick="editCol('${kind}',${it.id})">Редагувати</button><button class="del-btn" onclick="delCol('${kind}',${it.id})">Видалити</button></td></tr>`
+    `<tr>${s.cols.map(c=>{
+      const fld=s.fields.find(x=>x[0]===c);
+      if(fld&&fld[2]==='file') return '<td><img src="'+esc(it[c]||'')+'" alt="" style="width:64px;height:44px;object-fit:cover;border-radius:4px;background:#eee;"></td>';
+      return '<td>'+esc(it[c]||'')+'</td>';
+    }).join('')}<td><button class="edit-btn" onclick="editCol('${kind}',${it.id})">Редагувати</button><button class="del-btn" onclick="delCol('${kind}',${it.id})">Видалити</button></td></tr>`
   ).join('')||`<tr><td colspan="${s.cols.length+1}" style="color:var(--GD);padding:20px;">Поки порожньо</td></tr>`;
 }
 function editCol(kind,id){
   const it=collections[kind].find(x=>x.id===id); if(!it)return;
   document.getElementById('col-'+kind+'-id').value=it.id;
-  COL_SCHEMA[kind].fields.forEach(([f])=>{document.getElementById('col-'+kind+'-'+f).value=it[f]||'';});
+  COL_SCHEMA[kind].fields.forEach(([f,,type])=>{
+    document.getElementById('col-'+kind+'-'+f).value=it[f]||'';
+    if(type==='file'){
+      const pv=document.getElementById('col-'+kind+'-'+f+'-prev');
+      if(pv){ pv.src=it[f]||''; pv.style.display=it[f]?'block':'none'; }
+      const fi=document.getElementById('col-'+kind+'-'+f+'-file'); if(fi) fi.value='';
+    }
+  });
   document.getElementById('col-'+kind+'-sort').value=it.sort||0;
   document.getElementById('col-'+kind+'-title').textContent='Редагувати запис';
   document.getElementById('col-'+kind+'-cancel').style.display='';
@@ -1162,7 +1192,13 @@ function editCol(kind,id){
 }
 function resetColForm(kind){
   document.getElementById('col-'+kind+'-id').value='';
-  COL_SCHEMA[kind].fields.forEach(([f])=>{document.getElementById('col-'+kind+'-'+f).value='';});
+  COL_SCHEMA[kind].fields.forEach(([f,,type])=>{
+    document.getElementById('col-'+kind+'-'+f).value='';
+    if(type==='file'){
+      const pv=document.getElementById('col-'+kind+'-'+f+'-prev'); if(pv){ pv.src=''; pv.style.display='none'; }
+      const fi=document.getElementById('col-'+kind+'-'+f+'-file'); if(fi) fi.value='';
+    }
+  });
   document.getElementById('col-'+kind+'-sort').value='';
   document.getElementById('col-'+kind+'-title').textContent='Новий запис';
   document.getElementById('col-'+kind+'-cancel').style.display='none';
@@ -1170,7 +1206,23 @@ function resetColForm(kind){
 async function saveCol(kind){
   const id=document.getElementById('col-'+kind+'-id').value;
   const body={sort:document.getElementById('col-'+kind+'-sort').value||'0'};
-  COL_SCHEMA[kind].fields.forEach(([f])=>{body[f]=document.getElementById('col-'+kind+'-'+f).value;});
+  for(const [f,,type] of COL_SCHEMA[kind].fields){
+    if(type==='file'){
+      const fi=document.getElementById('col-'+kind+'-'+f+'-file');
+      const file=fi&&fi.files&&fi.files[0];
+      if(file){
+        const fd=new FormData(); fd.append('photofile',file);
+        const ur=await api('/upload',{method:'POST',body:fd});
+        if(!ur.ok){ adminFail(ur); return; }
+        body[f]=(await ur.json()).url;
+      } else {
+        body[f]=document.getElementById('col-'+kind+'-'+f).value;
+      }
+      if(!body[f]){ alert('Оберіть фото'); return; }
+    } else {
+      body[f]=document.getElementById('col-'+kind+'-'+f).value;
+    }
+  }
   const r=await api('/collections/'+kind+(id?'/'+id:''),{method:id?'PUT':'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
   if(!r.ok){ adminFail(r); return; }
   resetColForm(kind);
@@ -1186,6 +1238,6 @@ async function delCol(kind,id){
 }
 async function refreshPublicCollection(kind){
   await fetchCollection(kind);
-  ({stat:renderStats,evac_stat:renderEvacStats,partner:renderPartners,evac_step:renderEvacSteps,chat:renderChatQuick}[kind]||(()=>{}))();
+  ({stat:renderStats,evac_stat:renderEvacStats,partner:renderPartners,evac_step:renderEvacSteps,chat:renderChatQuick,showcase:renderShowcase}[kind]||(()=>{}))();
 }
 

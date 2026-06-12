@@ -95,3 +95,11 @@ export const SEED_COLLECTIONS = [
   { kind: 'evac_stat', sort: 2, data: { value: '2 800+', label_uk: 'тварин знайшли\nнові родини', label_en: 'animals found\nnew families' } },
   { kind: 'evac_stat', sort: 3, data: { value: '5', label_uk: 'областей охоплено\nрегулярними евакуаціями', label_en: 'regions covered\nby regular evacuations' } },
 ];
+
+// Home-page photo gallery ("Подаруй шанс"). Seeded separately so it also
+// back-fills databases created before this block existed.
+export const SEED_SHOWCASE = [
+  { kind: 'showcase', sort: 1, data: { photo: '/assets/img/showcase1.jpg', caption_uk: 'Подаруй шанс на щастя — візьми з шелтеру', caption_en: 'Give a chance for happiness — adopt from the shelter' } },
+  { kind: 'showcase', sort: 2, data: { photo: '/assets/img/showcase3.jpg', caption_uk: 'Shelter Leroy · Обухівка', caption_en: 'Shelter Leroy · Obukhivka' } },
+  { kind: 'showcase', sort: 3, data: { photo: '/assets/img/showcase2.jpg', caption_uk: 'Кожен знаходить свого друга', caption_en: 'Everyone finds their friend' } },
+];

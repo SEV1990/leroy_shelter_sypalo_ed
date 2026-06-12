@@ -127,14 +127,11 @@
     </div>
   </div>
 
-  <div class="hero-old-removed" style="display:none;" hidden="">
-    <div class="hero-r">
-      <div class="hero-r-split">
-        <div class="hero-r-img"><img src="/assets/img/showcase1.jpg" alt="Подаруй шанс на щастя"></div>
-        <div class="hero-r-img"><img src="/assets/img/showcase2.jpg" alt="Волонтер з табличкою"></div>
-      </div>
-      <div class="hero-r-ov"></div>
-    </div>
+  <!-- SHOWCASE GALLERY (editable in admin → «Галерея») -->
+  <div class="showcase" id="showcase">
+    <div class="tag inv" data-i18n="showcase_tag">Подаруй шанс</div>
+    <h2 class="h1 showcase-h" data-i18n="showcase_title">ВІЗЬМИ ДРУГА<br>З ШЕЛТЕРУ</h2>
+    <div class="showcase-grid" id="showcase-grid"></div>
   </div>
 
   
@@ -621,6 +618,7 @@
       <button class="adm-tab" onclick="adminTab('scheme',this)">Схема</button>
       <button class="adm-tab" onclick="adminTab('texts',this)">Тексти</button>
       <button class="adm-tab" onclick="adminTab('photos',this)">Фото</button>
+      <button class="adm-tab" onclick="adminTab('gallery',this)">Галерея</button>
       <button class="adm-tab" onclick="adminTab('stats',this)">Статистика</button>
       <button class="adm-tab" onclick="adminTab('partners',this)">Партнери</button>
       <button class="adm-tab" onclick="adminTab('evac',this)">Евакуація</button>
@@ -716,6 +714,7 @@
     <!-- TEXTS / PHOTOS / COLLECTIONS (built by JS) -->
     <div id="adm-sec-texts" class="adm-sec" style="display:none;"></div>
     <div id="adm-sec-photos" class="adm-sec" style="display:none;"></div>
+    <div id="adm-sec-gallery" class="adm-sec" style="display:none;"></div>
     <div id="adm-sec-stats" class="adm-sec" style="display:none;"></div>
     <div id="adm-sec-partners" class="adm-sec" style="display:none;"></div>
     <div id="adm-sec-evac" class="adm-sec" style="display:none;"></div>
