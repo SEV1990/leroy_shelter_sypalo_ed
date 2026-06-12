@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shelter Leroy — для евакуйованих тварин</title>
+<meta name="description" content="Shelter Leroy — волонтерський притулок для евакуйованих тварин. Частина ГО «Захист тварин України».">
+<link rel="icon" type="image/png" href="/assets/img/logo.png">
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<!-- ════════════════════════════════════════
+     NAV
+════════════════════════════════════════ -->
+<nav>
+  <a class="nav-logo" href="#" onclick="showPage('home')">
+    <img src="/assets/img/logo.png" class="nav-logo-svg" alt="Shelter Leroy">
+    <div class="nav-logo-text">
+      <strong>SHELTER LEROY</strong>
+      <span id="nav-sub" data-i18n="nav_sub">Другий шанс на безпечне життя для евакуйованих тварин</span>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="#" onclick="showPage('home')" id="nav-home" class="active" data-nav-i18n="nav-home">Головна</a>
+    <a href="#" onclick="showPage('animals')" id="nav-animals" data-nav-i18n="nav-animals">Наші тварини</a>
+    <a href="#" onclick="showPage('shelter')" id="nav-shelter" data-nav-i18n="nav-shelter">Наш шелтер</a>
+    <a href="#" onclick="showPage('team')" id="nav-team" data-nav-i18n="nav-team">Суперкоманда</a>
+    <a href="#" onclick="showPage('mission')" id="nav-mission" data-nav-i18n="nav-mission">Про нас</a>
+    <a href="#" onclick="showPage('help')" id="nav-help" data-nav-i18n="nav-help">Допомогти</a>
+    <a href="#" onclick="showPage('silentfront')" id="nav-silentfront" data-nav-i18n="nav-silentfront">Тихий фронт</a>
+    <a href="#" onclick="showPage('evacuation')" id="nav-evacuation" data-nav-i18n="nav-evacuation">Евакуація</a>
+    <a href="#" onclick="showPage('contacts')" id="nav-contacts" data-nav-i18n="nav-contacts">Контакти</a>
+    <a href="#" onclick="showPage('admin')" id="nav-admin" data-nav-i18n="nav-admin">Адмін</a>
+  </div>
+  <div class="lang-switch">
+    <button class="lang-btn active" id="btn-uk" onclick="setLang('uk')">УКР</button>
+    <button class="lang-btn" id="btn-en" onclick="setLang('en')">ENG</button>
+  </div>
+</nav>
+<button class="admin-key-btn" onclick="toggleAdmin()" title="Адмін">🔑</button>
+
+<!-- ════════════════════════════════════════
+     HOME
+════════════════════════════════════════ -->
+<div id="page-home" class="page active">
+  <!-- ADOPT -->
+  <div class="adopt">
+    <div class="tag" data-i18n="adopt_tag">Наші підопічні</div>
+    <h2 class="h1" data-i18n="adopt_title">Подаруй шанс<br>на справжнє<br>життя</h2>
+    <p class="desc" data-i18n="adopt_desc">Кожен з наших підопічних пережив евакуацію, стрес і страх. Вони заслуговують на справжній дім — теплий, безпечний і наповнений любов'ю.</p>
+    <div class="adopt-grid">
+      <div class="ac"><div class="ac-photo"><img src="/assets/img/adopt1.jpg" alt="Малиш"><div class="ac-sign">Подаруй шанс<br>на справжнє<br>життя!</div></div><div class="ac-name">Малиш · 1 рік · хлопець</div></div>
+      <div class="ac"><div class="ac-photo"><img src="/assets/img/adopt2.jpg" alt="Бусоля"><div class="ac-sign">Подаруй шанс<br>на справжнє<br>життя!</div></div><div class="ac-name">Бусоля · 2 роки · дівчина</div></div>
+      <div class="ac"><div class="ac-photo"><img src="/assets/img/adopt3.jpg" alt="Барон"><div class="ac-sign">Подаруй шанс<br>на справжнє<br>життя!</div></div><div class="ac-name">Барон · 5 років · хлопець</div></div>
+      <div class="ac"><div class="ac-photo"><img src="/assets/img/adopt4.jpg" alt="Ріка"><div class="ac-sign">Подаруй шанс<br>на справжнє<br>життя!</div></div><div class="ac-name">Ріка · 3 роки · дівчина</div></div>
+    </div>
+    <div class="adopt-cta"><a class="btn-k" href="#" onclick="showPage('animals')" style="font-size:15px;padding:18px 52px;">Всі тварини шелтеру →</a></div>
+  </div>
+
+  
+<!-- MISSION STRIP -->
+  <div class="ms">
+    <div>
+      <div class="tag" data-i18n="ms_tag">Місія та візія шелтеру</div>
+      <div class="ms-title" data-i18n="ms_title">Їхній порятунок —<br>питання людяності<br>навіть у найважчі часи</div>
+      <p class="ms-body" data-i18n="ms_body">ГО «Захист тварин України» з 2022 року рятує тварин з прифронтових зон. З 2024-го діє Leroy Shelter — безпечне місце для евакуйованих собак і котів, де вони отримують турботу і шанс знайти нову родину.</p>
+    </div>
+    <div class="ms-vals">
+      <div class="mv"><div class="mv-dot"></div><div class="mv-text"><strong>Людяність</strong><span>Допомога тим, хто не може попросити самостійно</span></div></div>
+      <div class="mv"><div class="mv-dot"></div><div class="mv-text"><strong>Гуманне ставлення</strong><span>Тільки терпіння, любов і фахова допомога</span></div></div>
+      <div class="mv"><div class="mv-dot"></div><div class="mv-text"><strong>Безперервна робота</strong><span>Виїзди в 5 областях попри небезпеку</span></div></div>
+      <div class="mv"><div class="mv-dot"></div><div class="mv-text"><strong>Нові родини</strong><span>2 800+ тварин вже знайшли свій дім</span></div></div>
+    </div>
+  </div>
+
+  
+<div class="hero" id="hero">
+    <div class="hero-slides" id="hero-slides">
+      <div class="hero-slide active"><img src="/assets/img/hero1.jpg" data-photo="hero1" alt=""></div>
+      <div class="hero-slide"><img src="/assets/img/hero2.jpg" data-photo="hero2" alt=""></div>
+      <div class="hero-slide"><img src="/assets/img/hero3.jpg" data-photo="hero3" alt=""></div>
+      <div class="hero-slide"><img src="/assets/img/hero4.jpg" data-photo="hero4" alt=""></div>
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow" data-i18n="hero_eyebrow">З 2022 РОКУ · 5 ОБЛАСТЕЙ · 2800+ ВРЯТОВАНИХ</div>
+      <h1 class="hero-title" data-i18n="hero_title">ТИХИЙ<br>ФРОНТ<br><em>ВОЛОНТЕРСТВА</em></h1>
+      <p class="hero-sub" data-i18n="hero_sub">Захист і порятунок тварин, які постраждали від війни. Евакуація, лікування та пошук нових родин для них.</p>
+      <div class="hero-btns">
+        <a class="btn-k" href="#" onclick="showPage('help')">💛 Підтримати шелтер</a>
+        <a class="btn-ol" href="#" onclick="showPage('animals')">Наші тварини</a>
+        <a class="btn-ol" href="#" onclick="showPage('evacuation')">Евакуація</a>
+      </div>
+    </div>
+    <div class="hero-dots" id="hero-dots">
+      <div class="hero-dot active" data-idx="0"></div>
+      <div class="hero-dot" data-idx="1"></div>
+      <div class="hero-dot" data-idx="2"></div>
+      <div class="hero-dot" data-idx="3"></div>
+    </div>
+    <div class="hero-counter"><b id="hero-num">01</b> / 04</div>
+    <div class="hero-scroll">SCROLL</div>
+  </div>
+
+  <!-- STATS BANNER -->
+  <div class="stats-banner">
+    <div class="sb-grid">
+      <div class="sb-item"><div class="sb-num" data-target="2800">0</div><div class="sb-suffix">+</div><div class="sb-lbl">тварин знайшли дім</div></div>
+      <div class="sb-item"><div class="sb-num" data-target="5">0</div><div class="sb-lbl">областей охоплення</div></div>
+      <div class="sb-item"><div class="sb-num" data-target="180">0</div><div class="sb-suffix">+</div><div class="sb-lbl">виїздів на передову</div></div>
+      <div class="sb-item"><div class="sb-num" data-target="20">0</div><div class="sb-lbl">вольєрів у шелтері</div></div>
+    </div>
+  </div>
+
+  <!-- JOURNEY -->
+  <div class="journey">
+    <div class="tag inv">Шлях тварини</div>
+    <h2 class="h1 jt-h">ВІД ФРОНТУ —<br>ДО НОВОГО ДОМУ</h2>
+    <div class="jt-line">
+      <div class="jt-step"><div class="jt-n">01</div><div class="jt-t">Фронт</div><p>Покинуті тварини в зоні бойових дій. Голод, страх, поранення.</p></div>
+      <div class="jt-arrow">→</div>
+      <div class="jt-step"><div class="jt-n">02</div><div class="jt-t">Евакуація</div><p>Виїзди наших волонтерів. Безпечне транспортування у тил.</p></div>
+      <div class="jt-arrow">→</div>
+      <div class="jt-step"><div class="jt-n">03</div><div class="jt-t">Шелтер</div><p>Лікування, соціалізація, догляд. Шанс відновитися.</p></div>
+      <div class="jt-arrow">→</div>
+      <div class="jt-step jt-final"><div class="jt-n">04</div><div class="jt-t">Нова родина</div><p>Постійні господарі. Тепло. Дім. Любов на все життя.</p></div>
+    </div>
+  </div>
+
+  <div class="hero-old-removed" style="display:none;" hidden="">
+    <div class="hero-r">
+      <div class="hero-r-split">
+        <div class="hero-r-img"><img src="/assets/img/showcase1.jpg" alt="Подаруй шанс на щастя"></div>
+        <div class="hero-r-img"><img src="/assets/img/showcase2.jpg" alt="Волонтер з табличкою"></div>
+      </div>
+      <div class="hero-r-ov"></div>
+    </div>
+  </div>
+
+  
+<!-- PARTNERS -->
+  <div class="partners">
+    <div class="partners-label" data-i18n="partners_label">Партнери та підтримка</div>
+    <div class="partners-grid" id="partners-grid">
+      <div class="pchip">UAnimals</div><div class="pchip">We Support Ukraine</div><div class="pchip">United for Animals</div>
+      <div class="pchip">Схід SOS</div><div class="pchip">Hill's</div><div class="pchip">Барбус</div>
+      <div class="pchip">Життєлюб</div><div class="pchip">Save Pets of Ukraine</div><div class="pchip">Neftek</div><div class="pchip">Leroy Real</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     ANIMALS
+════════════════════════════════════════ -->
+<div id="page-animals" class="page">
+  <div class="anim-hdr">
+    <div class="tag inv" data-i18n="anim_tag">Наші підопічні</div>
+    <h2 class="h1" data-i18n="anim_title">Вони чекають<br>на тебе</h2>
+    <p style="color:var(--GM);margin-top:10px;font-size:15px;">Кожен з них пережив евакуацію і заслуговує на справжній дім.</p>
+    <div class="filters">
+      <button class="fb active" onclick="filterAnimals('all',this)" data-i18n="filter_all">Всі</button>
+      <button class="fb" onclick="filterAnimals('dog',this)">Собаки</button>
+      <button class="fb" onclick="filterAnimals('cat',this)">Коти</button>
+      <button class="fb" onclick="filterAnimals('shelter',this)">В шелтері</button>
+      <button class="fb" onclick="filterAnimals('foster',this)">На перетримці</button>
+    </div>
+  </div>
+  <div id="animals-grid" class="animals-grid"></div>
+</div>
+
+<!-- ════════════════════════════════════════
+     SHELTER
+════════════════════════════════════════ -->
+<div id="page-shelter" class="page">
+  <div class="shelt-hero">
+    <div>
+      <div class="tag" data-i18n="shelter_tag">Наш шелтер</div>
+      <h2 class="h1" data-i18n="shelter_h">Leroy Shelter</h2>
+      <p class="desc" data-i18n="shelter_p1" style="color:#5a4010;">З літа 2024 року працює центр перетримки «Leroy Shelter» — безпечне місце для евакуйованих собак з Донеччини та Дніпропетровщини.</p>
+      <br>
+      <p class="desc" data-i18n="shelter_p2" style="color:#5a4010;">Тут тварини отримують безпеку, догляд і шанс знайти нову родину. Шелтер в Обухівці, Дніпропетровська обл.</p>
+      <br>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;">
+        <a class="btn-k" href="#" onclick="showPage('schememap')" data-i18n="shelter_btn1">Схема вольєрів</a>
+        <a class="btn-ol" href="#" onclick="showPage('help')" data-i18n="shelter_btn2">Допомогти шелтеру</a>
+      </div>
+    </div>
+    <img src="/assets/img/shelter.jpg" data-photo="shelter" alt="">
+  </div>
+  <div class="shelt-cards">
+    <div class="shelt-card"><div class="shelt-card-t" data-i18n="sc1_t">Безпека</div><p>Захищене місце подалі від зони бойових дій. Закриті вольєри, охорона, цілодобовий нагляд.</p></div>
+    <div class="shelt-card"><div class="shelt-card-t" data-i18n="sc2_t">Догляд</div><p>Щоденне годування, ветеринарна допомога, соціалізація та прогулянки. Кожна тварина під наглядом.</p></div>
+    <div class="shelt-card"><div class="shelt-card-t" data-i18n="sc3_t">Нова родина</div><p>Активна робота з пошуку постійних господарів. Публікації, заходи, Telegram-канал.</p></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     SCHEME MAP
+════════════════════════════════════════ -->
+<div id="page-schememap" class="page">
+  <div class="scm-hdr">
+    <div class="tag inv" data-i18n="scm_tag">Схема шелтеру</div>
+    <h2 class="h1" data-i18n="scm_h">Карта вольєрів</h2>
+    <p style="color:var(--GM);margin-top:10px;font-size:15px;" data-i18n="scm_p">Актуальна схема розміщення тварин у шелтері Leroy</p>
+  </div>
+  <div class="scm-body">
+    <div class="vleg">
+      <div class="vleg-item"><div class="vleg-dot" style="background:#1D9E75;"></div>Зайнятий</div>
+      <div class="vleg-item"><div class="vleg-dot" style="background:var(--W);border:1.5px solid var(--G);"></div>Порожній</div>
+      <div class="vleg-item"><div class="vleg-dot" style="background:#D85A30;"></div>Не функціонує</div>
+    </div>
+    <div class="vmap">
+      <div class="vlabel">ЗАЇЗД</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div class="vrow vrow-6" id="scm-top"></div>
+        <div class="vdivider"></div>
+        <div class="vrow vrow-6" id="scm-bottom"></div>
+      </div>
+      <div class="vside">
+        <div class="cat-bld">КОТОБУДИНОК</div>
+        <div class="vlabel" style="min-height:40px;">ЗАЇЗД</div>
+      </div>
+    </div>
+    <p id="scm-summary" style="margin-top:20px;font-size:12px;color:#5a4010;font-weight:600;"></p>
+  </div>
+  <div style="background:var(--K);padding:40px 60px;">
+    <p style="color:var(--GM);font-size:14px;">Для оновлення схеми — <a href="#" onclick="showPage('admin')" style="color:var(--Y);">адмін-панель</a>.</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     TEAM
+════════════════════════════════════════ -->
+<div id="page-team" class="page">
+  <div class="team-hdr">
+    <div class="tag inv" data-i18n="team_tag">Наші волонтери</div>
+    <h2 class="h1" data-i18n="team_title">Супер<br>команда</h2>
+    <p class="desc" data-i18n="team_p">Вони доглядають, лікують, соціалізують і знаходять нові родини для кожного підопічного шелтеру.</p>
+  </div>
+  <div class="team-grid" id="team-grid"></div>
+  <div class="team-cta">
+    <h2 style="font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--Y);margin-bottom:12px;" data-i18n="team_cta_h">Доєднатись до команди?</h2>
+    <p style="color:var(--GM);font-size:15px;max-width:480px;margin:0 auto 28px;" data-i18n="team_cta_p">Якщо тобі не байдуже, якщо хочеш бути поруч — ми чекаємо. Досвід не потрібен, потрібне серце.</p>
+    <a class="btn-y" href="#" onclick="showPage('contacts')" data-i18n="team_cta_btn">Написати нам</a>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     MISSION
+════════════════════════════════════════ -->
+<div id="page-mission" class="page">
+  <div class="miss-hero">
+    <div class="miss-big" data-i18n="miss_h">ЗАХИСТ<br><span>І</span><br>ПОРЯТУНОК<br>ТВАРИН</div>
+    <p class="miss-q" data-i18n="miss_q">«Їхній порятунок — питання людяності навіть у найважчі часи. Ми — їхній голос там, де більше нікого немає.»</p>
+  </div>
+  <div class="miss-blocks">
+    <div class="mb"><h2>Хто ми</h2><p>ГО «Захист тварин України» — волонтерська організація з березня 2022 року. Ми рятуємо тварин, які опинились у зонах бойових дій.</p></div>
+    <div class="mb"><h2>Наша місія</h2><p>Забезпечити безпеку, медичну допомогу та нові домівки для тварин, що постраждали від війни. Ми діємо там, де найважливіше.</p></div>
+    <div class="mb"><h2>Географія</h2><p>Регулярні евакуації з Донецької, Херсонської, Запорізької, Харківської та Сумської областей.</p></div>
+    <div class="mb"><h2>Цінності</h2><p>Людяність, гуманне ставлення до тварин, допомога тим, хто не може попросити сам. Ці принципи ведуть нас щодня.</p></div>
+  </div>
+  <div class="proj-sec">
+    <div class="tag inv">Ключові проєкти</div>
+    <h2 class="h1" style="color:var(--Y);">Ініціативи</h2>
+    <div class="proj-grid">
+      <div class="pcard"><h3>«Годівнички Зооцентру»</h3><p>47 станцій у прифронтових містах, нанесені на карту.</p></div>
+      <div class="pcard"><h3>#Водутваринам</h3><p>Поїлки у Дніпрі, Гуляйполі та Часовому Яру.</p></div>
+      <div class="pcard"><h3>«Корм замість подарунку»</h3><p>Люди дарують корм замість речей — тисячі кілограмів.</p></div>
+      <div class="pcard"><h3>Leroy Shelter</h3><p>Центр перетримки з 2024 року для евакуйованих тварин.</p></div>
+      <div class="pcard"><h3>База загублених тварин</h3><p>Електронна база пошуку. Благодійні стендап-вечірки.</p></div>
+      <div class="pcard"><h3>Паралельна допомога ЗСУ</h3><p>Евакуація авто, посилки військовим, зменшення демаскування.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     ABOUT
+════════════════════════════════════════ -->
+<div id="page-about" class="page">
+  <div class="ab-hero">
+    <div>
+      <div class="tag inv" data-i18n="about_tag">Про організацію</div>
+      <h2 class="h1" data-i18n="about_h">ГО «Захист<br>тварин України»</h2>
+      <p class="desc">З березня 2022 року ми працюємо з тваринами, які постраждали внаслідок воєнних дій. Тисячі тварин залишились без домівок і безпеки. Їхній порятунок — питання людяності.</p>
+    </div>
+    <img src="/assets/img/about.jpg" data-photo="about" alt="">
+  </div>
+  <div class="tl">
+    <div class="tag" data-i18n="tl_tag">Хронологія</div>
+    <h2 class="h1" data-i18n="tl_h">Як ми зростали</h2>
+    <div class="tl-items">
+      <div class="tli"><div class="tly">2022</div><div class="tld-col"><div class="tld"></div><div class="tl-line"></div></div><div class="tlc"><h3>Початок місії</h3><p>ГО «Захист тварин України» починає роботу. Перші евакуації з Донеччини та Херсонщини.</p></div></div>
+      <div class="tli"><div class="tly">2023</div><div class="tld-col"><div class="tld"></div><div class="tl-line"></div></div><div class="tlc"><h3>Масштабування</h3><p>«Годівнички», #Водутваринам. 2 800+ тварин знайшли родини. Telegram 7 000 підписників.</p></div></div>
+      <div class="tli"><div class="tly">2024</div><div class="tld-col"><div class="tld"></div><div class="tl-line"></div></div><div class="tlc"><h3>Shelter Leroy відкрито</h3><p>Центр перетримки в Обухівці для евакуйованих собак.</p></div></div>
+      <div class="tli"><div class="tly">2025</div><div class="tld-col"><div class="tld"></div><div class="tl-line"></div></div><div class="tlc"><h3>3 417+ тварин евакуйовано</h3><p>Станом на грудень 2025. Передано 95 805 кг корму. 5 областей.</p></div></div>
+    </div>
+  </div>
+  <div class="vals">
+    <div class="tag inv" data-i18n="vals_tag">Наші цінності</div>
+    <h2 class="h1" data-i18n="vals_h" style="color:var(--Y);">Філософія емпатії</h2>
+    <div class="vals-grid">
+      <div class="vcard"><h3>Людяність</h3><p>Порятунок тварин — питання людяності навіть у найважчі часи.</p></div>
+      <div class="vcard"><h3>Гуманне ставлення</h3><p>Тільки терпіння, любов і фахова допомога навіть наляканим тваринам.</p></div>
+      <div class="vcard"><h3>Допомога без слів</h3><p>Тварини не можуть попросити самі. Ми — їхній голос.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     SILENT FRONT
+════════════════════════════════════════ -->
+<div id="page-silentfront" class="page">
+
+  <!-- HERO: title slide -->
+  <div class="sf-hero">
+    <div>
+      <div class="tag" data-i18n="sf_tag">Тихий фронт</div>
+      <h2 class="h1" data-i18n="sf_h">Тихий фронт<br>волонтерства</h2>
+      <p class="desc" data-i18n="sf_p">Захист і порятунок тварин у війні — це невидима, але критично важлива робота. Поки є люди, які не залишають тварин позаду.</p>
+      <a class="btn-y" href="#" onclick="showPage('help')" style="margin-top:8px;" data-i18n="sf_btn">Підтримати місію</a>
+    </div>
+    <img src="/assets/img/sf-hero.jpg" data-photo="sf_hero" alt="Хто ми і чому це важливо" style="width:100%;border-radius:3px;object-fit:cover;max-height:440px;">
+  </div>
+
+  <!-- STATS BAR -->
+  <div class="sf-stats" id="sf-stats">
+    <div class="sfst"><div class="sfst-n">3 417+</div><div class="sfst-l">Тварин евакуйовано</div></div>
+    <div class="sfst"><div class="sfst-n">2 800+</div><div class="sfst-l">Знайшли родину</div></div>
+    <div class="sfst"><div class="sfst-n">95 805</div><div class="sfst-l">кг корму передано</div></div>
+    <div class="sfst"><div class="sfst-n">7 000</div><div class="sfst-l">підписників Telegram</div></div>
+  </div>
+
+  <!-- SLIDE: Евакуація тварин -->
+  <div class="sf-slide">
+    <div class="sf-slide-img"><img src="/assets/img/sf-evac.jpg" alt="Евакуація тварин"></div>
+    <div class="sf-slide-text">
+      <div class="tag">Евакуація</div>
+      <h3 class="sf-slide-title">Що таке евакуація тварин</h3>
+      <p>Евакуація тварин — це не просто перевезення, це комплексна робота:</p>
+      <ul class="sf-list">
+        <li><strong>Безпека</strong> — робота з наляканими й агресивними тваринами</li>
+        <li><strong>Логістика</strong> — транспорт, клітки, маршрути</li>
+        <li><strong>Медичний супровід</strong> — перша допомога та лікування</li>
+        <li><strong>Тимчасове розміщення</strong> — притулки, перетримка, догляд</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SLIDE: Географія -->
+  <div class="sf-slide sf-slide-rev">
+    <div class="sf-slide-img"><img src="/assets/img/sf-geo.jpg" alt="Географія роботи"></div>
+    <div class="sf-slide-text">
+      <div class="tag">Масштаби</div>
+      <h3 class="sf-slide-title">Географія та масштаби роботи</h3>
+      <p>Регулярні евакуації з прифронтових територій:</p>
+      <ul class="sf-list">
+        <li>Донецька область</li>
+        <li>Херсонська область</li>
+        <li>Запорізька область</li>
+        <li>Харківська область</li>
+        <li>Сумська область</li>
+      </ul>
+      <div class="sf-bignum">Понад <span>3 417 тварин</span> евакуйовано</div>
+      <p style="font-size:13px;color:var(--GM);">(станом на грудень 2025 року)</p>
+    </div>
+  </div>
+
+  <!-- SLIDE: Shelter -->
+  <div class="sf-slide">
+    <div class="sf-slide-img"><img src="/assets/img/sf-shelter.jpg" alt="Leroy Shelter"></div>
+    <div class="sf-slide-text">
+      <div class="tag">Leroy Shelter</div>
+      <h3 class="sf-slide-title">Допомога після евакуації</h3>
+      <p>З літа 2024 року працює центр перетримки <strong>«Leroy Shelter»</strong>, який приймає евакуйованих собак з Донеччини та Дніпропетровщини.</p>
+      <ul class="sf-list">
+        <li>Безпека</li>
+        <li>Догляд</li>
+        <li>Шанс знайти нову родину</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SLIDE: Гуманітарка -->
+  <div class="sf-slide sf-slide-rev">
+    <div class="sf-slide-img"><img src="/assets/img/sf-humanitarian.jpg" alt="Гуманітарна допомога"></div>
+    <div class="sf-slide-text">
+      <div class="tag">Гуманітарна допомога</div>
+      <h3 class="sf-slide-title">У цифрах</h3>
+      <ul class="sf-list">
+        <li><strong style="color:var(--Y);">95 805 кг</strong> корму та м'ясних продуктів</li>
+        <li><strong style="color:var(--Y);">8 000 кг</strong> корму притулкам Дніпра</li>
+        <li><strong style="color:var(--Y);">22 000 кг</strong> фруктів та круп для свійської худоби</li>
+        <li><strong style="color:var(--Y);">1 000 кг</strong> наповнювачів для котів і гризунів</li>
+      </ul>
+      <p style="margin-top:16px;font-size:14px;color:var(--GM);">Допомога надходить також тваринам, якими опікуються військові у прифронтових зонах.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE: Паралельна допомога ЗСУ -->
+  <div class="sf-slide">
+    <div class="sf-slide-img"><img src="/assets/img/sf-army.jpg" alt="Допомога ЗСУ"></div>
+    <div class="sf-slide-text">
+      <div class="tag">ЗСУ</div>
+      <h3 class="sf-slide-title">Паралельна допомога ЗСУ</h3>
+      <p>Під час роботи з тваринами ми також:</p>
+      <ul class="sf-list">
+        <li>Допомагаємо з <strong>евакуацією автівок</strong></li>
+        <li>Передаємо <strong>посилки військовим</strong></li>
+        <li><strong>Зменшуємо ризики демаскування</strong> позицій, де тварини можуть видати присутність людей</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SLIDE: Ключові проєкти -->
+  <div class="sf-slide sf-slide-rev">
+    <div class="sf-slide-img"><img src="/assets/img/sf-projects.jpg" alt="Ключові проєкти"></div>
+    <div class="sf-slide-text">
+      <div class="tag">Проєкти</div>
+      <h3 class="sf-slide-title">Ключові ініціативи</h3>
+      <ul class="sf-list">
+        <li><strong>«Годівнички Зооцентру»</strong> — 47 станцій у прифронтових містах</li>
+        <li><strong>#Водутваринам</strong> — поїлки у Дніпрі, Гуляйполі та Часовому Яру</li>
+        <li><strong>«Корм замість подарунку»</strong> — люди дарують корм замість речей</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SLIDE: 2800+ родин -->
+  <div class="sf-fullslide">
+    <img src="/assets/img/sf-families.jpg" alt="2800 тварин знайшли родини" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:var(--K);">
+  </div>
+
+  <!-- SLIDE: Партнери -->
+  <div class="sf-slide">
+    <div class="sf-slide-img"><img src="/assets/img/sf-partners.jpg" alt="Партнери"></div>
+    <div class="sf-slide-text">
+      <div class="tag">Партнерство</div>
+      <h3 class="sf-slide-title">Це спільна мережа допомоги</h3>
+      <p>Разом з партнерами по всій країні та за кордоном:</p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;">
+        <span class="sfp">UAnimals</span><span class="sfp">We Support Ukraine</span>
+        <span class="sfp">United for Animals</span><span class="sfp">Схід SOS</span>
+        <span class="sfp">Hill's</span><span class="sfp">Барбус</span>
+        <span class="sfp">Життєлюб</span><span class="sfp">Save Pets of Ukraine</span>
+        <span class="sfp">Neftek</span><span class="sfp">та інші</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div style="background:var(--Y);padding:60px;text-align:center;">
+    <div class="tag">Долучитись</div>
+    <h2 class="h1" style="font-size:clamp(36px,5vw,72px);">Стань частиною<br>тихого фронту</h2>
+    <p style="color:#5a4010;font-size:16px;max-width:520px;margin:0 auto 32px;">Волонтерство, донат, перетримка або просто поширення — кожна дія рятує життя.</p>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+      <a class="btn-k" href="#" onclick="showPage('help')">Допомогти шелтеру</a>
+      <a class="btn-ol" href="#" onclick="showPage('evacuation')">Евакуація тварин</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- ════════════════════════════════════════
+     EVACUATION
+════════════════════════════════════════ -->
+<div id="page-evacuation" class="page">
+  <div class="ev-hero">
+    <div>
+      <div class="tag inv" data-i18n="evac_tag">Евакуація тварин</div>
+      <h2 class="h1" data-i18n="evac_h">Евакуація —<br>це не просто<br>перевезення</h2>
+      <p class="desc" data-i18n="evac_p">Безпека, логістика, медицина та тимчасове розміщення. Комплексна робота у прифронтових зонах.</p>
+    </div>
+    <img src="/assets/img/shelter.jpg" alt="">
+  </div>
+  <div class="ev-steps">
+    <div class="tag">Чотири напрямки</div>
+    <h2 class="h1">Що таке евакуація</h2>
+    <div class="ev-sg" id="evs-grid">
+      <div class="evs"><div class="evs-n">01</div><div class="evs-t">Безпека</div><p>Робота з наляканими й агресивними тваринами. Спецпідготовка волонтерів.</p></div>
+      <div class="evs"><div class="evs-n">02</div><div class="evs-t">Логістика</div><p>Транспорт, клітки, маршрути. Виїзди в 5 областях з урахуванням ситуації.</p></div>
+      <div class="evs"><div class="evs-n">03</div><div class="evs-t">Медицина</div><p>Перша ветдопомога та лікування. Співпраця з клініками і волонтерами.</p></div>
+      <div class="evs"><div class="evs-n">04</div><div class="evs-t">Розміщення</div><p>Leroy Shelter приймає евакуйованих собак до знаходження постійного дому.</p></div>
+    </div>
+  </div>
+  <div class="ev-stats" id="ev-stats-grid">
+    <div class="evst"><div class="evst-n">3 417+</div><div class="evst-l">тварин евакуйовано<br>станом на грудень 2025</div></div>
+    <div class="evst"><div class="evst-n">2 800+</div><div class="evst-l">тварин знайшли<br>нові родини</div></div>
+    <div class="evst"><div class="evst-n">5</div><div class="evst-l">областей охоплено<br>регулярними евакуаціями</div></div>
+  </div>
+  <div class="ev-zones">
+    <div class="tag">Географія</div>
+    <h2 class="h1">Де ми працюємо</h2>
+    <p class="desc" style="color:#5a4010;">Регулярні евакуації з прифронтових територій.</p>
+    <div class="ev-zg">
+      <div class="evz"><div class="evz-n">Донецька</div><div class="evz-s">обл.</div></div>
+      <div class="evz"><div class="evz-n">Херсонська</div><div class="evz-s">обл.</div></div>
+      <div class="evz"><div class="evz-n">Запорізька</div><div class="evz-s">обл.</div></div>
+      <div class="evz"><div class="evz-n">Харківська</div><div class="evz-s">обл.</div></div>
+      <div class="evz"><div class="evz-n">Сумська</div><div class="evz-s">обл.</div></div>
+    </div>
+  </div>
+  <div class="ev-req">
+    <div class="tag inv" data-i18n="evac_req_tag">Запит на евакуацію</div>
+    <h2 class="h1" data-i18n="evac_req_h">Потрібна евакуацію<br>тварини?</h2>
+    <div class="ev-rg">
+      <div class="ev-ri">
+        <p>Якщо ваша тварина або тварини знайомих перебувають у небезпечному районі — залиш заявку.</p>
+        <ul>
+          <li>Місце перебування тварини</li>
+          <li>Вид та кількість тварин</li>
+          <li>Контакт власника або очевидця</li>
+          <li>Будь-яка додаткова інформація</li>
+        </ul>
+      </div>
+      <div class="ev-form fd">
+        <div class="fg"><label>Ваше ім'я та телефон</label><input type="text" id="ev-contact" placeholder="Олена, +380 xx xxx xx xx"></div>
+        <div class="fg"><label>Місце перебування тварини</label><input type="text" id="ev-location" placeholder="Місто, вулиця або орієнтир"></div>
+        <div class="fg"><label>Вид та кількість</label><input type="text" id="ev-animals" placeholder="3 собаки, 1 кіт..."></div>
+        <div class="fg"><label>Опис ситуації</label><textarea id="ev-details" placeholder="Опишіть де знаходяться..."></textarea></div>
+        <button class="fsub" data-i18n="evac_req_btn" onclick="submitEvacuation()">Надіслати запит на евакуацію</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     HELP
+════════════════════════════════════════ -->
+<div id="page-help" class="page">
+  <div class="help-hero">
+    <div class="tag">Долучитись</div>
+    <h2 class="h1">Допоможи<br>тваринам</h2>
+    <p class="desc">Кожна гривня рятує життя. Кожна година волонтерства — це надія для тварини у зоні бойових дій.</p>
+  </div>
+  <div class="help-cards">
+    <div class="hcard">
+      <div class="hcard-ico">💛</div>
+      <h3>Донат</h3>
+      <p>Ваші кошти йдуть на корм, ветдопомогу, транспорт та утримання шелтеру. 100% — тваринам.</p>
+      <div>
+        <div class="dopt" onclick="showDonate('Monobank')"><span>🟡 Monobank (банка)</span><span>→</span></div>
+        <div class="dopt" onclick="showDonate('PrivatBank')"><span>🟢 PrivatBank</span><span>→</span></div>
+        <div class="dopt" onclick="showDonate('PayPal')"><span>🔵 PayPal</span><span>→</span></div>
+        <div class="dopt" onclick="showDonate('IBAN')"><span>🏦 Банківський переказ</span><span>→</span></div>
+      </div>
+    </div>
+    <div class="hcard">
+      <div class="hcard-ico">🤝</div>
+      <h3>Волонтерство</h3>
+      <p>Потрібні люди для виїздів, догляду, перевезення та онлайн-допомоги.</p>
+      <p>— Виїзди в шелтер<br>— Тимчасова перетримка<br>— SMM та комунікації<br>— Пошук родин<br>— Корм та ліки</p>
+      <br><a class="btn-y" href="#" onclick="showPage('contacts')" style="display:block;text-align:center;">Написати нам</a>
+    </div>
+    <div class="hcard">
+      <div class="hcard-ico">🏠</div>
+      <h3>Взяти тварину</h3>
+      <p>У шелтері понад 15 тварин, які чекають на постійний дім або перетримку.</p>
+      <p>— Обрати в каталозі<br>— Зв'язатись через форму<br>— Знайомство<br>— Договір<br>— Тварина їде додому!</p>
+      <br><a class="btn-y" href="#" onclick="showPage('animals')" style="display:block;text-align:center;">Дивитись тварин</a>
+    </div>
+  </div>
+  <div class="help-food">
+    <div class="tag">Корм у шелтер</div>
+    <h2 class="h1">Корм замість подарунку</h2>
+    <p class="desc" style="color:#5a4010;">Купи пакет корму та привези в шелтер або передай з волонтером.</p>
+    <div class="help-food-grid">
+      <div class="hfcard"><div class="hfcard-t">Сухий корм</div><p>Для собак та котів. Будь-який виробник.</p></div>
+      <div class="hfcard"><div class="hfcard-t">Вологий корм</div><p>Особливо для поранених та хворих тварин.</p></div>
+      <div class="hfcard"><div class="hfcard-t">Ветпрепарати</div><p>Антипаразитарні, антибіотики, перев'язувальні.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     CONTACTS
+════════════════════════════════════════ -->
+<div id="page-contacts" class="page">
+  <div class="ct-hero">
+    <div>
+      <div class="tag inv" data-i18n="ct_tag">Зв'язатись з нами</div>
+      <h2 class="h1" data-i18n="ct_title">Контакти</h2>
+      <p class="desc">Маєш питання, хочеш взяти тварину або стати волонтером? Напиши — відповімо швидко.</p>
+      <div class="ci-list">
+        <div class="ci"><div class="ci-icon">🌐</div><div><div class="ci-l">Сайт</div><div class="ci-v" data-setting="contact_site">saveanimals.org.ua</div></div></div>
+        <div class="ci"><div class="ci-icon">📸</div><div><div class="ci-l">Instagram</div><div class="ci-v" data-setting="contact_instagram">@saveanimals_ukraine</div></div></div>
+        <div class="ci"><div class="ci-icon">✈️</div><div><div class="ci-l">Telegram</div><div class="ci-v" data-setting="contact_telegram">~7 000 підписників</div></div></div>
+        <div class="ci"><div class="ci-icon">📍</div><div><div class="ci-l">Shelter Leroy</div><div class="ci-v" data-setting="contact_address">Обухівка, Дніпропетровська обл.</div></div></div>
+      </div>
+    </div>
+    <div class="ct-form">
+      <h3 data-i18n="ct_form_h">Написати нам</h3>
+      <div class="fg"><label>Ваше ім'я</label><input type="text" id="ct-name" placeholder="Олена Шевченко"></div>
+      <div class="fg"><label>Телефон або Email</label><input type="text" id="ct-contact" placeholder="+380 xx xxx xx xx або email@gmail.com"></div>
+      <div class="fg"><label>Тема</label><select id="ct-subject"><option>Хочу взяти тварину</option><option>Волонтерство</option><option>Донат / партнерство</option><option>Евакуація тварини</option><option>Інше</option></select></div>
+      <div class="fg"><label>Повідомлення</label><textarea id="ct-message" placeholder="Розкажіть більше..."></textarea></div>
+      <button class="fsub" onclick="submitContact()">Надіслати повідомлення</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     ADMIN
+════════════════════════════════════════ -->
+<div id="page-admin" class="page">
+  <div class="adm">
+    <h2 style="font-family:'Bebas Neue',sans-serif;font-size:40px;margin-bottom:6px;">Адмін-панель</h2>
+    <p style="color:var(--GD);margin-bottom:24px;">Управління тваринами шелтеру Leroy</p>
+
+    <!-- LOGIN GATE -->
+    <div id="admin-login" class="adm-form" style="max-width:380px;">
+      <h3>Вхід</h3>
+      <div class="fg"><label>Пароль адміністратора</label><input type="password" id="adm-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')adminLogin()"></div>
+      <button class="add-btn" onclick="adminLogin()">Увійти</button>
+    </div>
+
+    <!-- MANAGEMENT (shown after login) -->
+    <div id="admin-panel" style="display:none;">
+    <div class="adm-tabs">
+      <button class="adm-tab active" onclick="adminTab('animals',this)">Тварини</button>
+      <button class="adm-tab" onclick="adminTab('team',this)">Команда</button>
+      <button class="adm-tab" onclick="adminTab('scheme',this)">Схема</button>
+      <button class="adm-tab" onclick="adminTab('texts',this)">Тексти</button>
+      <button class="adm-tab" onclick="adminTab('photos',this)">Фото</button>
+      <button class="adm-tab" onclick="adminTab('stats',this)">Статистика</button>
+      <button class="adm-tab" onclick="adminTab('partners',this)">Партнери</button>
+      <button class="adm-tab" onclick="adminTab('evac',this)">Евакуація</button>
+      <button class="adm-tab" onclick="adminTab('chat',this)">Чат</button>
+      <button class="adm-tab" onclick="adminTab('contacts',this)">Контакти</button>
+      <button class="adm-tab" onclick="adminTab('requests',this)">Заявки</button>
+      <button class="adm-tab" style="margin-left:auto;color:var(--GD);" onclick="adminLogout()">Вийти</button>
+    </div>
+
+    <!-- ANIMALS -->
+    <div id="adm-sec-animals" class="adm-sec">
+      <div class="adm-form" style="margin-bottom:28px;">
+        <h3 id="a-formtitle">Нова тварина</h3>
+        <input type="hidden" id="a-id" value="">
+        <div class="g2">
+          <div class="fg"><label>Ім'я</label><input type="text" id="a-name" placeholder="Барон"></div>
+          <div class="fg"><label>Вид</label><select id="a-type"><option value="dog">Собака</option><option value="cat">Кіт</option></select></div>
+          <div class="fg"><label>Стать</label><select id="a-gender"><option value="м">Хлопець</option><option value="ж">Дівчина</option></select></div>
+          <div class="fg"><label>Вік</label><input type="text" id="a-age" placeholder="2 роки"></div>
+        </div>
+        <div class="fg"><label>Порода</label><input type="text" id="a-breed" placeholder="Вівчарка, середній"></div>
+        <div class="fg"><label>Статус</label><select id="a-status"><option value="shelter">В шелтері</option><option value="foster">На перетримці</option><option value="adopted">Прилаштований</option></select></div>
+        <div class="fg"><label>Опис</label><textarea id="a-desc" placeholder="Евакуйований з Донеччини..."></textarea></div>
+        <div class="fg"><label>Фото (файл)</label><input type="file" id="a-photofile" accept="image/*"></div>
+        <div class="fg"><label>або URL фото</label><input type="text" id="a-photo" placeholder="https://..."></div>
+        <button class="add-btn" onclick="saveAnimal()">Зберегти</button>
+        <button class="del-btn" id="a-cancel" style="margin-left:8px;display:none;" onclick="resetAnimalForm()">Скасувати</button>
+      </div>
+      <table class="adm-table">
+        <thead><tr><th>#</th><th>Ім'я</th><th>Вид</th><th>Стать</th><th>Вік</th><th>Статус</th><th>Дії</th></tr></thead>
+        <tbody id="admin-tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- TEAM -->
+    <div id="adm-sec-team" class="adm-sec" style="display:none;">
+      <div class="adm-form" style="margin-bottom:28px;">
+        <h3 id="t-formtitle">Новий учасник команди</h3>
+        <input type="hidden" id="t-id" value="">
+        <div class="g2">
+          <div class="fg"><label>Ім'я</label><input type="text" id="t-name" placeholder="Олексій Коваль"></div>
+          <div class="fg"><label>Роль</label><input type="text" id="t-role" placeholder="Засновник · Керівник"></div>
+        </div>
+        <div class="fg"><label>Опис</label><textarea id="t-desc" placeholder="Коротко про людину..."></textarea></div>
+        <div class="g2">
+          <div class="fg"><label>Порядок</label><input type="number" id="t-sort" placeholder="1"></div>
+          <div class="fg"><label>Фото (файл)</label><input type="file" id="t-photofile" accept="image/*"></div>
+        </div>
+        <div class="fg"><label>або URL фото</label><input type="text" id="t-photo" placeholder="https://..."></div>
+        <button class="add-btn" onclick="saveTeam()">Зберегти</button>
+        <button class="del-btn" id="t-cancel" style="margin-left:8px;display:none;" onclick="resetTeamForm()">Скасувати</button>
+      </div>
+      <table class="adm-table">
+        <thead><tr><th>Порядок</th><th>Ім'я</th><th>Роль</th><th>Дії</th></tr></thead>
+        <tbody id="team-tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- SCHEME -->
+    <div id="adm-sec-scheme" class="adm-sec" style="display:none;">
+      <div class="adm-form" style="margin-bottom:28px;">
+        <h3 id="e-formtitle">Новий вольєр</h3>
+        <input type="hidden" id="e-id" value="">
+        <div class="g2">
+          <div class="fg"><label>Номер (без #)</label><input type="text" id="e-code" placeholder="11"></div>
+          <div class="fg"><label>Хто всередині</label><input type="text" id="e-occupant" placeholder="Малиш / — / Не функц."></div>
+          <div class="fg"><label>Статус</label><select id="e-status"><option value="occ">Зайнятий</option><option value="empty">Порожній</option><option value="nof">Не функціонує</option></select></div>
+          <div class="fg"><label>Ширина</label><select id="e-span"><option value="1">1 клітинка</option><option value="2">2 клітинки</option></select></div>
+          <div class="fg"><label>Блок</label><select id="e-block"><option value="top">Верхній</option><option value="bottom">Нижній</option></select></div>
+          <div class="fg"><label>Порядок</label><input type="number" id="e-sort" placeholder="1"></div>
+        </div>
+        <button class="add-btn" onclick="saveEnclosure()">Зберегти</button>
+        <button class="del-btn" id="e-cancel" style="margin-left:8px;display:none;" onclick="resetEnclosureForm()">Скасувати</button>
+      </div>
+      <table class="adm-table">
+        <thead><tr><th>#</th><th>Хто</th><th>Статус</th><th>Ширина</th><th>Блок</th><th>Порядок</th><th>Дії</th></tr></thead>
+        <tbody id="enc-tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- CONTACTS / SETTINGS -->
+    <div id="adm-sec-contacts" class="adm-sec" style="display:none;">
+      <div class="adm-form">
+        <h3>Контактна інформація</h3>
+        <div class="fg"><label>Сайт</label><input type="text" id="s-contact_site"></div>
+        <div class="fg"><label>Instagram</label><input type="text" id="s-contact_instagram"></div>
+        <div class="fg"><label>Telegram</label><input type="text" id="s-contact_telegram"></div>
+        <div class="fg"><label>Адреса (Shelter Leroy)</label><input type="text" id="s-contact_address"></div>
+        <button class="add-btn" onclick="saveSettings()">Зберегти</button>
+      </div>
+    </div>
+
+    <!-- TEXTS / PHOTOS / COLLECTIONS (built by JS) -->
+    <div id="adm-sec-texts" class="adm-sec" style="display:none;"></div>
+    <div id="adm-sec-photos" class="adm-sec" style="display:none;"></div>
+    <div id="adm-sec-stats" class="adm-sec" style="display:none;"></div>
+    <div id="adm-sec-partners" class="adm-sec" style="display:none;"></div>
+    <div id="adm-sec-evac" class="adm-sec" style="display:none;"></div>
+    <div id="adm-sec-chat" class="adm-sec" style="display:none;"></div>
+
+    <!-- REQUESTS -->
+    <div id="adm-sec-requests" class="adm-sec" style="display:none;">
+      <table class="adm-table">
+        <thead><tr><th>Дата</th><th>Тип</th><th>Ім'я / контакт</th><th>Деталі</th><th>Дії</th></tr></thead>
+        <tbody id="requests-tbody"></tbody>
+      </table>
+    </div>
+    </div><!-- /admin-panel -->
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="fg-grid">
+    <div>
+      <div class="flogo">SHELTER LEROY</div>
+      <p class="fdesc" data-i18n="footer_desc">Волонтерський притулок для евакуйованих тварин. Частина ГО «Захист тварин України».</p>
+      <p class="fdesc" data-i18n="footer_loc" style="color:var(--GD);margin-top:8px;">Обухівка, Дніпропетровська обл. · з 2024 року</p>
+    </div>
+    <div class="fcol">
+      <h4>Шелтер</h4>
+      <a href="#" onclick="showPage('animals')">Наші тварини</a>
+      <a href="#" onclick="showPage('shelter')">Наш шелтер</a>
+      <a href="#" onclick="showPage('team')">Команда</a>
+      <a href="#" onclick="showPage('schememap')">Схема вольєрів</a>
+    </div>
+    <div class="fcol">
+      <h4>Організація</h4>
+      <a href="#" onclick="showPage('about')">Про нас</a>
+      <a href="#" onclick="showPage('mission')">Наша місія</a>
+      <a href="#" onclick="showPage('silentfront')">Тихий фронт</a>
+      <a href="#" onclick="showPage('evacuation')">Евакуація</a>
+    </div>
+    <div class="fcol">
+      <h4>Допомога</h4>
+      <a href="#" onclick="showPage('help')">Допомогти шелтеру</a>
+      <a href="#" onclick="showPage('help')">Взяти тварину</a>
+      <a href="#" onclick="showPage('contacts')">Контакти</a>
+      <a href="#">saveanimals.org.ua</a>
+    </div>
+  </div>
+  <div class="fbot">
+    <span data-i18n="footer_copy">© 2024 Shelter Leroy · ГО «Захист тварин України»</span>
+    <span data-i18n="footer_made">Зроблено з ❤️ волонтерами</span>
+  </div>
+</footer>
+
+<!-- CHATBOT -->
+<div class="cbub-wrap"><button class="cbub" onclick="toggleChat()">🐾</button><span class="cbub-label" onclick="toggleChat()">Написати нам</span></div>
+<div class="cwin" id="chatbot">
+  <div class="chead"><div class="chead-n">ПОМІЧНИК ШЕЛТЕРУ</div><div class="chead-s">Відповідаємо на питання</div></div>
+  <div class="cmsgs" id="cmsgs"><div class="cmsg bot">Привіт! Запитай про тварин, донати чи волонтерство 🐾</div></div>
+  <div class="cquick" id="cquick">
+    <button class="cqb" onclick="quickMsg('Як взяти тварину?')">Взяти тварину</button>
+    <button class="cqb" onclick="quickMsg('Як задонатити?')">Задонатити</button>
+    <button class="cqb" onclick="quickMsg('Волонтерство')">Волонтерство</button>
+    <button class="cqb" onclick="quickMsg('Де шелтер?')">Адреса</button>
+  </div>
+  <div class="cinp-row">
+    <input type="text" id="cinp" placeholder="Напишіть питання..." onkeydown="if(event.key==='Enter')sendChat()">
+    <button class="csend" onclick="sendChat()">→</button>
+  </div>
+</div>
+
+<!-- DONATE MODAL -->
+<div class="moverlay" id="dm">
+  <div class="modal">
+    <button class="mclose" onclick="closeDonate()">✕</button>
+    <h2 id="mt"></h2><p id="mb"></p>
+    <div class="mrows" id="mr"></div>
+  </div>
+</div>
+<script src="/js/app.js"></script>
+</body>
+</html>
